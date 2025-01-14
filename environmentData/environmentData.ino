@@ -1,14 +1,14 @@
 #include <ESP8266WiFi.h> 
 #include <ThingSpeak.h> 
 // Wi-Fi configuration 
-const char* ssid = "Ask Krat"; 
-const char* pass = "feature-hollow-truly"; 
+const char* ssid = "Christian-iPhone13"; 
+const char* pass = "ab6prds1bp1w7"; 
 WiFiClient client; 
 // ThingSpeak configuration 
-unsigned long channelID = 2808435;             
+unsigned long channelID = 2808283;             
 // Replace with your ThingSpeak channel ID 
-const char* APIWriteKey = "NZMINPBNS2DQ54M7";  // Replace with your Write API Key 
-const char* APIReadKey = "Y19UBOX6WN8V7LNW"; 
+const char* APIWriteKey = "G4QFBJM48LQQLI4T";  // Replace with your Write API Key 
+const char* APIReadKey = "PUSZ92SJXXMO8BDG"; 
 const int postDelay = 20 * 1000;  // 20 seconds delay 
 int ledPin = D2;  // Pin connected to the LED (D4 for built-in LED on ESP8266) 
 void setup() { 
