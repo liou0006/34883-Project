@@ -25,13 +25,13 @@ void loop() {
   // Serial.println("part 1--------- end");
   // delay(1000);
   // Serial.println("part 2--------- start");
-   //int sensorValue = analogRead(A0);
+   int sensorValue = analogRead(A0);
   // Serial.print("Analog Value: ");
   // Serial.print(sensorValue);
   //float voltage = sensorValue * (5.0 / 1023.0);
   // Serial.print("\tVoltage: ");
   // Serial.print(voltage);
-   //float tempValue = (5.0 / 1023.0) * sensorValue * 100;
+   float tempValue = (5.0 / 1023.0) * sensorValue * 100;
   // Serial.print(" Temperature Value: ");
   // Serial.print(tempeValue);
   // Serial.println("\u00B0");
@@ -56,7 +56,7 @@ void loop() {
 
   //s.write(DHT.humidity); // Send the tuple as a string
   //Serial.println(DHT.humidity);
-  s.print(String(DHT.humidity)+ "," + String(DHT.temperature) + "\n");
+  s.print(String(DHT.humidity)+ "," + String(tempValue) + "\n");
   Serial.println(DHT.humidity);
   Serial.println(DHT.temperature);
   //Serial.println(DHT.temperature);
