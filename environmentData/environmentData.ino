@@ -7,11 +7,11 @@ dht DHT;
 int data;                    //Initialized variable to store recieved data
 #include <SoftwareSerial.h>  //Included SoftwareSerial Library
 //Started SoftwareSerial at RX and TX pin of ESP8266/NodeMCU
-SoftwareSerial mySerial = SoftwareSerial(3, 4);
+SoftwareSerial s(0,1);
 
 void setup() {
   Serial.begin(9600);
-  mySerial.begin(9600);
+  s.begin(9600);
 
 
 
@@ -39,16 +39,17 @@ void loop() {
 
 
   // Format the temperature and humidity as strings
-  String temperatureMessage = "Temperature: " + String(tempeValue) + "\n";
-  String humidityMessage = "Humidity: " + String((float) DHT.humidity) + "\n";
+  //String temperatureMessage = "Temperature: " + String(tempeValue) + "\n";
+  //String humidityMessage = "Humidity: " + String((float) DHT.humidity) + "\n";
 
   // Send the messages via SoftwareSerial
-  Serial.println("Sending data...");
+  //Serial.println("Sending data...");
   //mySerial.write((byte*)&tempeValue, sizeof(tempeValue));
   //mySerial.write((byte*)&DHT.humidity, sizeof(DHT.humidity));
 
-  mySerial.print(tempeValue);
-  mySerial.print(DHT.humidity);
+  //mySerial.print(tempeValue);
+  //mySerial.print(DHT.humidity);
+  s.write(123);
   
   delay(2000);
 }
