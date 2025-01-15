@@ -1,69 +1,54 @@
-#include <ESP8266WiFi.h> 
-#include <ThingSpeak.h> 
-// Wi-Fi configuration 
-const char* ssid = "Christian-iPhone13"; 
-const char* pass = "ab6prds1bp1w7"; 
-WiFiClient client; 
-// ThingSpeak configuration 
-unsigned long channelID = 2808283;             
-// Replace with your ThingSpeak channel ID 
-const char* APIWriteKey = "G4QFBJM48LQQLI4T";  // Replace with your Write API Key 
-const char* APIReadKey = "PUSZ92SJXXMO8BDG"; 
-const int postDelay = 20 * 1000;  // 20 seconds delay 
-int ledPin = D2;  // Pin connected to the LED (D4 for built-in LED on ESP8266) 
-void setup() { 
-Serial.begin(115200);       
-// Initialize serial communication for debugging 
-pinMode(ledPin, OUTPUT);    // Set LED pin as output 
-digitalWrite(ledPin, LOW);  // Turn off the LED initially 
-Serial.println("Connecting to WiFi..."); 
-WiFi.begin(ssid, pass);  // Connect to WiFi 
- 
-  // Wait for WiFi connection 
-  while (WiFi.status() != WL_CONNECTED) { 
-    delay(500); 
-    Serial.print("."); 
-  } 
-  Serial.println("\nConnected to WiFi"); 
-  Serial.print("IP Address: "); 
-  Serial.println(WiFi.localIP());  // Print the assigned IP address 
-} 
- 
-void loop() { 
-  // Get RSSI value 
-  float rssi = WiFi.RSSI(); 
- 
-  // Toggle LED state 
-  static bool ledState = false;                 // Track LED state (on/off) 
-  ledState = !ledState;                         // Toggle state 
-  digitalWrite(ledPin, ledState ? HIGH : LOW);  // Update LED 
- 
-  // Print debug information 
-  Serial.print("WiFi RSSI: "); 
-  Serial.println(rssi); 
-  Serial.print("LED State: "); 
-  Serial.println(ledState ? "ON" : "OFF"); 
- 
-  // Send data to ThingSpeak 
-  ThingSpeak.begin(client); 
-  ThingSpeak.setField(1, rssi);              // Send RSSI to Field 1 
-  ThingSpeak.setField(2, ledState ? 1 : 0);  // Send LED state to Field 2 (1 for ON, 0 for OFF) 
- 
-  if (ThingSpeak.writeFields(channelID, APIWriteKey)) { 
-    Serial.println("Data sent to ThingSpeak successfully."); 
-  } else { 
-    Serial.println("Failed to send data to ThingSpeak."); 
-  } 
- 
-  // Read the value from Field 1 (RSSI) using the Read API key 
-  float field1Value = ThingSpeak.readFloatField(channelID, 1, APIReadKey); 
-  if (!isnan(field1Value)) { 
-    Serial.print("Field 1 (RSSI) value from ThingSpeak: "); 
-    Serial.println(field1Value); 
-  } else { 
-    Serial.println("Failed to read Field 1 value from ThingSpeak."); 
-  } 
- 
-  client.stop();     // Close the connection 
-  delay(postDelay);  // Wait before the next update 
-} 
+#include <dht.h>
+
+dht DHT;
+
+#define DHT11_PIN 12
+
+int data;                    //Initialized variable to store recieved data
+#include <SoftwareSerial.h>  //Included SoftwareSerial Library
+//Started SoftwareSerial at RX and TX pin of ESP8266/NodeMCU
+SoftwareSerial mySerial = SoftwareSerial(3, 4);
+
+void setup() {
+  Serial.begin(9600);
+  mySerial.begin(9600);
+
+
+
+}
+
+void loop() {
+  int chk = DHT.read11(DHT11_PIN);
+  Serial.println("part 1--------- start");
+  Serial.print("Humidity = ");
+  Serial.println(DHT.humidity);
+  Serial.println("part 1--------- end");
+  delay(1000);
+  Serial.println("part 2--------- start");
+  int sensorValue = analogRead(A0);
+  Serial.print("Analog Value: ");
+  Serial.print(sensorValue);
+  float voltage = sensorValue * (5.0 / 1023.0);
+  Serial.print("\tVoltage: ");
+  Serial.print(voltage);
+  float tempeValue = (5.0 / 1023.0) * sensorValue * 100;
+  Serial.print(" Temperature Value: ");
+  Serial.print(tempeValue);
+  Serial.println("\u00B0");
+  Serial.println("part 2--------- end");
+
+
+  // Format the temperature and humidity as strings
+  String temperatureMessage = "Temperature: " + String(tempeValue) + "\n";
+  String humidityMessage = "Humidity: " + String((float) DHT.humidity) + "\n";
+
+  // Send the messages via SoftwareSerial
+  Serial.println("Sending data...");
+  //mySerial.write((byte*)&tempeValue, sizeof(tempeValue));
+  //mySerial.write((byte*)&DHT.humidity, sizeof(DHT.humidity));
+
+  mySerial.print(tempeValue);
+  mySerial.print(DHT.humidity);
+  
+  delay(2000);
+}
