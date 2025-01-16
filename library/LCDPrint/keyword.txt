@@ -1,0 +1,2 @@
+lcdPrintWelcome	KEYWORD1
+lcdPrintData	KEYWORD1
