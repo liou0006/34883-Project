@@ -96,6 +96,9 @@ void loop() {
     String value1 = receivedData.substring(0, commaIndex);
     String value2 = receivedData.substring(commaIndex + 1);
     // Send values to ThingSpeak
+
+    if ((value1.toFloat() > -50.0 && (value1.toFloat() < 50.0)) && (value2.toFloat() > 0.0 && (value2.toFloat() < 100.0))) {
+
     if (ThingSpeak.setField(1, value1.toFloat())) {
       Serial.println("Field 1 updated");
       Serial.println(value1);
@@ -103,17 +106,18 @@ void loop() {
       Serial.println("Failed to update Field 1");
     }
 
-    if (ThingSpeak.setField(2, value2.toInt())) {
+    if (ThingSpeak.setField(2, value2.toFloat())) {
       Serial.println(value2);
       Serial.println("Field 2 updated");
     } else {
       Serial.println("Failed to update Field 1");
     }
-    // if (ThingSpeak.writeField(myChannelNumber, 2, value2.toFloat(), myWriteAPIKey) == 200) {
+    // if (ThingSpeak.writeField(myChannelNumber, 2, value2.toInt(), myWriteAPIKey) == 200) {
     //   Serial.println("Field 2 updated");
     // } else {
     //   Serial.println("Failed to update Field 2");
     // }
+  }
   }
   
   int responseCode = ThingSpeak.writeFields(channelID, APIWriteKey);
