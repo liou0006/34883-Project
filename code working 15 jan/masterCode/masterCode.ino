@@ -58,7 +58,7 @@ void loop() {
   //Serial.println(DHT.humidity);
   s.print(String(DHT.humidity)+ "," + String(tempValue) + "\n");
   Serial.println(DHT.humidity);
-  Serial.println(DHT.temperature);
+  Serial.println(String(tempValue));
   //Serial.println(DHT.temperature);
   //Serial.println("hello world");
   
