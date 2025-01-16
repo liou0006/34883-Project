@@ -6,7 +6,7 @@
 
 #include <LiquidCrystal.h>
 #include <Servo.h>
-#include "LCDPrint.h"
+#include <LCDPrint.h>
 
 // Define the pins that are connected to the LCD-display
 uint8_t rs = 2; ///< Reset pin for LCD.
