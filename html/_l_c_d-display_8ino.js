@@ -1,9 +1,6 @@
 var _l_c_d_display_8ino =
 [
     [ "lcd", "_l_c_d-display_8ino.html#a09de00c9686e26e05b0bb9e2a2099bb1", null ],
-    [ "lcdPrintData", "_l_c_d-display_8ino.html#ad781822b1710ae8a59ffdd8af956689f", null ],
-    [ "lcdPrintWelcome", "_l_c_d-display_8ino.html#a5b39bf3020a8ee481a025f9d8c96657f", null ],
-    [ "lcdSetup", "_l_c_d-display_8ino.html#ae98842dc46649ba06d811f959b496a27", null ],
     [ "loop", "_l_c_d-display_8ino.html#afe461d27b9c48d5921c00d521181f12f", null ],
     [ "setup", "_l_c_d-display_8ino.html#a4fc01d736fe50cf5b977f755b675f11d", null ],
     [ "D4", "_l_c_d-display_8ino.html#a732dcb77099c4ab576a5001d4d983d2d", null ],

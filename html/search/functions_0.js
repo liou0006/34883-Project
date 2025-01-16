@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['getdata_0',['getData',['../_dummy___e_s_p_8ino.html#a9264a7758fddbf93b585532e46679fd8',1,'Dummy_ESP.ino']]]
+  ['backend_0',['Backend',['../class_backend.html#ad445c22b689d68344600bb38a01746ec',1,'Backend']]],
+  ['begin_1',['begin',['../class_backend.html#a85bf4cf1607adf4081e727c4f5db1010',1,'Backend']]]
 ];

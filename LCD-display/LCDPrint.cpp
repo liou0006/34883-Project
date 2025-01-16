@@ -1,10 +1,11 @@
+#include "Arduino.h"
 #include "LCDPrint.h"
 #include <LiquidCrystal.h>
 
 /**
  * @brief Prints a super cool welcome message on the LCD, and switches back to T/H view.
  */
-void lcdPrintWelcome(){
+void lcdPrintWelcome(LiquidCrystal lcd){
   lcd.print("Welcome home!");
   delay(500);
   for(int i = 0; i<16; i++){
@@ -29,7 +30,7 @@ void lcdPrintWelcome(){
  * @param T  Temperature variable.
  * @param H  Humidity variable.
  */
-void lcdPrintData(float T, float H){
+void lcdPrintData(LiquidCrystal lcd, float T, float H){
   lcd.setCursor(7,0);
   lcd.print(T, 1);
   lcd.write(byte(0));

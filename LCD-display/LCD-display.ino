@@ -17,6 +17,7 @@ uint8_t D6 = 12;  ///< D6 pin for LCD.
 uint8_t D7 = 13;  ///< D7 pin for LCD.
 LiquidCrystal lcd(rs, enable, D4, D5, D6, D7);
 
+
 /// Degree symbol for the LCD.
 const byte deg[8] = {
   B00110, B01001, B01001, B00110,
@@ -53,8 +54,8 @@ void loop() {
     //getData(&T, &H);
     
     lcd.clear();
-    lcdPrintWelcome();
-    lcdPrintData(T, H);
+    lcdPrintWelcome(lcd);
+    lcdPrintData(lcd, T, H);
 
     // If the temperature is too high, "open window"
     if(T >= 22){
@@ -68,5 +69,3 @@ void loop() {
   
   // Perhaps do some other stuff
 }
-
-

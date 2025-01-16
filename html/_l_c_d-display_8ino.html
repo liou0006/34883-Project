@@ -110,6 +110,7 @@ $(function(){initNavTree('_l_c_d-display_8ino.html',''); initResizable(true); })
 <div class="contents">
 <div class="textblock"><code>#include &lt;LiquidCrystal.h&gt;</code><br />
 <code>#include &lt;Servo.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_l_c_d_print_8h_source.html">LCDPrint.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -119,15 +120,6 @@ Functions</h2></td></tr>
 <tr class="separator:a4fc01d736fe50cf5b977f755b675f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe461d27b9c48d5921c00d521181f12f" id="r_afe461d27b9c48d5921c00d521181f12f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe461d27b9c48d5921c00d521181f12f">loop</a> ()</td></tr>
 <tr class="separator:afe461d27b9c48d5921c00d521181f12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae98842dc46649ba06d811f959b496a27" id="r_ae98842dc46649ba06d811f959b496a27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae98842dc46649ba06d811f959b496a27">lcdSetup</a> ()</td></tr>
-<tr class="memdesc:ae98842dc46649ba06d811f959b496a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the LCD and resets cursor.  <br /></td></tr>
-<tr class="separator:ae98842dc46649ba06d811f959b496a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b39bf3020a8ee481a025f9d8c96657f" id="r_a5b39bf3020a8ee481a025f9d8c96657f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b39bf3020a8ee481a025f9d8c96657f">lcdPrintWelcome</a> ()</td></tr>
-<tr class="memdesc:a5b39bf3020a8ee481a025f9d8c96657f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a super cool welcome message on the LCD, and switches back to T/H view.  <br /></td></tr>
-<tr class="separator:a5b39bf3020a8ee481a025f9d8c96657f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad781822b1710ae8a59ffdd8af956689f" id="r_ad781822b1710ae8a59ffdd8af956689f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad781822b1710ae8a59ffdd8af956689f">lcdPrintData</a> (float <a class="el" href="_dummy___e_s_p_8ino.html#a1e59dd36aafb310776e617456b9415b5">T</a>, float <a class="el" href="_dummy___e_s_p_8ino.html#ab9f9100cd00f9c578d17142734dfdb47">H</a>)</td></tr>
-<tr class="memdesc:ad781822b1710ae8a59ffdd8af956689f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the temperature and humidity to the LCD.  <br /></td></tr>
-<tr class="separator:ad781822b1710ae8a59ffdd8af956689f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -203,74 +195,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad781822b1710ae8a59ffdd8af956689f" name="ad781822b1710ae8a59ffdd8af956689f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad781822b1710ae8a59ffdd8af956689f">&#9670;&#160;</a></span>lcdPrintData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lcdPrintData </td>
-          <td>(</td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>T</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>H</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints the temperature and humidity to the LCD. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">T</td><td>Temperature variable. </td></tr>
-    <tr><td class="paramname">H</td><td>Humidity variable. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a5b39bf3020a8ee481a025f9d8c96657f" name="a5b39bf3020a8ee481a025f9d8c96657f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b39bf3020a8ee481a025f9d8c96657f">&#9670;&#160;</a></span>lcdPrintWelcome()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lcdPrintWelcome </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a super cool welcome message on the LCD, and switches back to T/H view. </p>
-
-</div>
-</div>
-<a id="ae98842dc46649ba06d811f959b496a27" name="ae98842dc46649ba06d811f959b496a27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae98842dc46649ba06d811f959b496a27">&#9670;&#160;</a></span>lcdSetup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lcdSetup </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Clears the LCD and resets cursor. </p>
 
 </div>
 </div>

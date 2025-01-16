@@ -108,8 +108,7 @@ $(function(){initNavTree('_dummy___e_s_p_8ino.html',''); initResizable(true); })
   <div class="headertitle"><div class="title">Dummy_ESP.ino File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;ESP8266WiFi.h&gt;</code><br />
-<code>#include &lt;ThingSpeak.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_backend_8h_source.html">Backend.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -120,72 +119,41 @@ Functions</h2></td></tr>
 <tr class="memitem:a0065e813bee838e5a6ece69bbb80b172" id="r_a0065e813bee838e5a6ece69bbb80b172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0065e813bee838e5a6ece69bbb80b172">UARTSendData</a> (float <a class="el" href="#a1e59dd36aafb310776e617456b9415b5">T</a>, float <a class="el" href="#ab9f9100cd00f9c578d17142734dfdb47">H</a>)</td></tr>
 <tr class="memdesc:a0065e813bee838e5a6ece69bbb80b172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the temperature and humidity data to Arduino connected to UART1.  <br /></td></tr>
 <tr class="separator:a0065e813bee838e5a6ece69bbb80b172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9264a7758fddbf93b585532e46679fd8" id="r_a9264a7758fddbf93b585532e46679fd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9264a7758fddbf93b585532e46679fd8">getData</a> (float *<a class="el" href="#a1e59dd36aafb310776e617456b9415b5">T</a>, float *<a class="el" href="#ab9f9100cd00f9c578d17142734dfdb47">H</a>)</td></tr>
-<tr class="memdesc:a9264a7758fddbf93b585532e46679fd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the temperature and humidity data from ThingSpeak.  <br /></td></tr>
-<tr class="separator:a9264a7758fddbf93b585532e46679fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a587ba0cb07f02913598610049a3bbb79" id="r_a587ba0cb07f02913598610049a3bbb79"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a587ba0cb07f02913598610049a3bbb79">ssid</a> = &quot;NameName&quot;</td></tr>
-<tr class="memdesc:a587ba0cb07f02913598610049a3bbb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSID of the connected network.  <br /></td></tr>
-<tr class="separator:a587ba0cb07f02913598610049a3bbb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bef28806edf8f4c8cb82584b7e8c3cb" id="r_a3bef28806edf8f4c8cb82584b7e8c3cb"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bef28806edf8f4c8cb82584b7e8c3cb">pass</a> = &quot;Etellerandet&quot;</td></tr>
-<tr class="memdesc:a3bef28806edf8f4c8cb82584b7e8c3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password of the connected network.  <br /></td></tr>
-<tr class="separator:a3bef28806edf8f4c8cb82584b7e8c3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a323dfc205549b3c13f0a25c1b670708a" id="r_a323dfc205549b3c13f0a25c1b670708a"><td class="memItemLeft" align="right" valign="top">WiFiClient&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a323dfc205549b3c13f0a25c1b670708a">client</a></td></tr>
-<tr class="separator:a323dfc205549b3c13f0a25c1b670708a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0d9270c83271ce7b422c04f63ccdc24" id="r_ab0d9270c83271ce7b422c04f63ccdc24"><td class="memItemLeft" align="right" valign="top">const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0d9270c83271ce7b422c04f63ccdc24">channelID</a> = 2808283</td></tr>
-<tr class="memdesc:ab0d9270c83271ce7b422c04f63ccdc24"><td class="mdescLeft">&#160;</td><td class="mdescRight">ChannelID of ThingSpeak channel.  <br /></td></tr>
-<tr class="separator:ab0d9270c83271ce7b422c04f63ccdc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6663c625bbcc560b54fc2bf5096de079" id="r_a6663c625bbcc560b54fc2bf5096de079"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6663c625bbcc560b54fc2bf5096de079">APIReadKey</a> = &quot;PUSZ92SJXXMO8BDG&quot;</td></tr>
-<tr class="memdesc:a6663c625bbcc560b54fc2bf5096de079"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read API key of ThingSpeak channel.  <br /></td></tr>
-<tr class="separator:a6663c625bbcc560b54fc2bf5096de079"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab68b888c3d204a4403af6d1b22f6d07c" id="r_ab68b888c3d204a4403af6d1b22f6d07c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab68b888c3d204a4403af6d1b22f6d07c">server</a> = &quot;api.thingspeak.com&quot;</td></tr>
-<tr class="separator:ab68b888c3d204a4403af6d1b22f6d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55ac2223071eb4f7170a6c865f3a7c53" id="r_a55ac2223071eb4f7170a6c865f3a7c53"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55ac2223071eb4f7170a6c865f3a7c53">fieldT</a> = 1</td></tr>
-<tr class="memdesc:a55ac2223071eb4f7170a6c865f3a7c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the temperature field.  <br /></td></tr>
-<tr class="separator:a55ac2223071eb4f7170a6c865f3a7c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71012dc73331f148210e2c795c964859" id="r_a71012dc73331f148210e2c795c964859"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71012dc73331f148210e2c795c964859">fieldH</a> = 2</td></tr>
-<tr class="memdesc:a71012dc73331f148210e2c795c964859"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the humidity field.  <br /></td></tr>
-<tr class="separator:a71012dc73331f148210e2c795c964859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0974771b2fba5718eed6eecd656aac59" id="r_a0974771b2fba5718eed6eecd656aac59"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0974771b2fba5718eed6eecd656aac59">ssid</a> = &quot;NameName&quot;</td></tr>
+<tr class="memdesc:a0974771b2fba5718eed6eecd656aac59"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSID of the connected network.  <br /></td></tr>
+<tr class="separator:a0974771b2fba5718eed6eecd656aac59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a543ce0d7b42f492162d73ad4880d58c4" id="r_a543ce0d7b42f492162d73ad4880d58c4"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a543ce0d7b42f492162d73ad4880d58c4">pass</a> = &quot;Etellerandet&quot;</td></tr>
+<tr class="memdesc:a543ce0d7b42f492162d73ad4880d58c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password of the connected network.  <br /></td></tr>
+<tr class="separator:a543ce0d7b42f492162d73ad4880d58c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45cf487b7a438e2176288955a338f25" id="r_ac45cf487b7a438e2176288955a338f25"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac45cf487b7a438e2176288955a338f25">channelID</a> = 2808283</td></tr>
+<tr class="memdesc:ac45cf487b7a438e2176288955a338f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">ChannelID of ThingSpeak channel.  <br /></td></tr>
+<tr class="separator:ac45cf487b7a438e2176288955a338f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a923e70820bb9a5fae12be3831a8899de" id="r_a923e70820bb9a5fae12be3831a8899de"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a923e70820bb9a5fae12be3831a8899de">APIReadKey</a> = &quot;PUSZ92SJXXMO8BDG&quot;</td></tr>
+<tr class="memdesc:a923e70820bb9a5fae12be3831a8899de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read API key of ThingSpeak channel.  <br /></td></tr>
+<tr class="separator:a923e70820bb9a5fae12be3831a8899de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ebe63cf2c323533f389bf601e1e9378" id="r_a7ebe63cf2c323533f389bf601e1e9378"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ebe63cf2c323533f389bf601e1e9378">APIWriteKey</a> = &quot;QIDQOTKIH000FKXO&quot;</td></tr>
+<tr class="separator:a7ebe63cf2c323533f389bf601e1e9378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affeefede74d4b54c220f6a43dd2beabd" id="r_affeefede74d4b54c220f6a43dd2beabd"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affeefede74d4b54c220f6a43dd2beabd">server</a> = &quot;api.thingspeak.com&quot;</td></tr>
+<tr class="separator:affeefede74d4b54c220f6a43dd2beabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a0a453e4b372d3296b731d0f48e87d" id="r_a37a0a453e4b372d3296b731d0f48e87d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37a0a453e4b372d3296b731d0f48e87d">fieldT</a> = 2</td></tr>
+<tr class="memdesc:a37a0a453e4b372d3296b731d0f48e87d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the temperature field.  <br /></td></tr>
+<tr class="separator:a37a0a453e4b372d3296b731d0f48e87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a921b8427d3428d6ef39329c53fb9c8b1" id="r_a921b8427d3428d6ef39329c53fb9c8b1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a921b8427d3428d6ef39329c53fb9c8b1">fieldH</a> = 1</td></tr>
+<tr class="memdesc:a921b8427d3428d6ef39329c53fb9c8b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the humidity field.  <br /></td></tr>
+<tr class="separator:a921b8427d3428d6ef39329c53fb9c8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e59dd36aafb310776e617456b9415b5" id="r_a1e59dd36aafb310776e617456b9415b5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e59dd36aafb310776e617456b9415b5">T</a> = 0</td></tr>
 <tr class="memdesc:a1e59dd36aafb310776e617456b9415b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature variable.  <br /></td></tr>
 <tr class="separator:a1e59dd36aafb310776e617456b9415b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9f9100cd00f9c578d17142734dfdb47" id="r_ab9f9100cd00f9c578d17142734dfdb47"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9f9100cd00f9c578d17142734dfdb47">H</a> = 0</td></tr>
 <tr class="memdesc:ab9f9100cd00f9c578d17142734dfdb47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Humidity variable.  <br /></td></tr>
 <tr class="separator:ab9f9100cd00f9c578d17142734dfdb47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43928f946db11d4a7ab309391ec759c6" id="r_a43928f946db11d4a7ab309391ec759c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_backend.html">Backend</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43928f946db11d4a7ab309391ec759c6">backend</a> (<a class="el" href="#a0974771b2fba5718eed6eecd656aac59">ssid</a>, <a class="el" href="#a543ce0d7b42f492162d73ad4880d58c4">pass</a>, <a class="el" href="#ac45cf487b7a438e2176288955a338f25">channelID</a>, <a class="el" href="#a923e70820bb9a5fae12be3831a8899de">APIReadKey</a>, <a class="el" href="#a7ebe63cf2c323533f389bf601e1e9378">APIWriteKey</a>, <a class="el" href="#affeefede74d4b54c220f6a43dd2beabd">server</a>, <a class="el" href="#a37a0a453e4b372d3296b731d0f48e87d">fieldT</a>, <a class="el" href="#a921b8427d3428d6ef39329c53fb9c8b1">fieldH</a>)</td></tr>
+<tr class="separator:a43928f946db11d4a7ab309391ec759c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a9264a7758fddbf93b585532e46679fd8" name="a9264a7758fddbf93b585532e46679fd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9264a7758fddbf93b585532e46679fd8">&#9670;&#160;</a></span>getData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void getData </td>
-          <td>(</td>
-          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>T</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>H</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the temperature and humidity data from ThingSpeak. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*T</td><td>Pointer to temperature variable. </td></tr>
-    <tr><td class="paramname">*H</td><td>Pointer to the humidity variable. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="afe461d27b9c48d5921c00d521181f12f" name="afe461d27b9c48d5921c00d521181f12f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe461d27b9c48d5921c00d521181f12f">&#9670;&#160;</a></span>loop()</h2>
 
@@ -251,14 +219,14 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a6663c625bbcc560b54fc2bf5096de079" name="a6663c625bbcc560b54fc2bf5096de079"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6663c625bbcc560b54fc2bf5096de079">&#9670;&#160;</a></span>APIReadKey</h2>
+<a id="a923e70820bb9a5fae12be3831a8899de" name="a923e70820bb9a5fae12be3831a8899de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a923e70820bb9a5fae12be3831a8899de">&#9670;&#160;</a></span>APIReadKey</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* APIReadKey = &quot;PUSZ92SJXXMO8BDG&quot;</td>
+          <td class="memname">char* APIReadKey = &quot;PUSZ92SJXXMO8BDG&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -267,14 +235,79 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ab0d9270c83271ce7b422c04f63ccdc24" name="ab0d9270c83271ce7b422c04f63ccdc24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0d9270c83271ce7b422c04f63ccdc24">&#9670;&#160;</a></span>channelID</h2>
+<a id="a7ebe63cf2c323533f389bf601e1e9378" name="a7ebe63cf2c323533f389bf601e1e9378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ebe63cf2c323533f389bf601e1e9378">&#9670;&#160;</a></span>APIWriteKey</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const unsigned long channelID = 2808283</td>
+          <td class="memname">char* APIWriteKey = &quot;QIDQOTKIH000FKXO&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a43928f946db11d4a7ab309391ec759c6" name="a43928f946db11d4a7ab309391ec759c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43928f946db11d4a7ab309391ec759c6">&#9670;&#160;</a></span>backend</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_backend.html">Backend</a> backend(<a class="el" href="#a0974771b2fba5718eed6eecd656aac59">ssid</a>, <a class="el" href="#a543ce0d7b42f492162d73ad4880d58c4">pass</a>, <a class="el" href="#ac45cf487b7a438e2176288955a338f25">channelID</a>, <a class="el" href="#a923e70820bb9a5fae12be3831a8899de">APIReadKey</a>, <a class="el" href="#a7ebe63cf2c323533f389bf601e1e9378">APIWriteKey</a>, <a class="el" href="#affeefede74d4b54c220f6a43dd2beabd">server</a>, <a class="el" href="#a37a0a453e4b372d3296b731d0f48e87d">fieldT</a>, <a class="el" href="#a921b8427d3428d6ef39329c53fb9c8b1">fieldH</a>) </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a0974771b2fba5718eed6eecd656aac59">ssid</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a543ce0d7b42f492162d73ad4880d58c4">pass</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#ac45cf487b7a438e2176288955a338f25">channelID</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a923e70820bb9a5fae12be3831a8899de">APIReadKey</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a7ebe63cf2c323533f389bf601e1e9378">APIWriteKey</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#affeefede74d4b54c220f6a43dd2beabd">server</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a37a0a453e4b372d3296b731d0f48e87d">fieldT</a></td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a921b8427d3428d6ef39329c53fb9c8b1">fieldH</a></td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac45cf487b7a438e2176288955a338f25" name="ac45cf487b7a438e2176288955a338f25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45cf487b7a438e2176288955a338f25">&#9670;&#160;</a></span>channelID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long channelID = 2808283</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -284,28 +317,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a323dfc205549b3c13f0a25c1b670708a" name="a323dfc205549b3c13f0a25c1b670708a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a323dfc205549b3c13f0a25c1b670708a">&#9670;&#160;</a></span>client</h2>
+<a id="a921b8427d3428d6ef39329c53fb9c8b1" name="a921b8427d3428d6ef39329c53fb9c8b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a921b8427d3428d6ef39329c53fb9c8b1">&#9670;&#160;</a></span>fieldH</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">WiFiClient client</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a71012dc73331f148210e2c795c964859" name="a71012dc73331f148210e2c795c964859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71012dc73331f148210e2c795c964859">&#9670;&#160;</a></span>fieldH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const uint8_t fieldH = 2</td>
+          <td class="memname">uint8_t fieldH = 1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -314,14 +333,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a55ac2223071eb4f7170a6c865f3a7c53" name="a55ac2223071eb4f7170a6c865f3a7c53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55ac2223071eb4f7170a6c865f3a7c53">&#9670;&#160;</a></span>fieldT</h2>
+<a id="a37a0a453e4b372d3296b731d0f48e87d" name="a37a0a453e4b372d3296b731d0f48e87d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37a0a453e4b372d3296b731d0f48e87d">&#9670;&#160;</a></span>fieldT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t fieldT = 1</td>
+          <td class="memname">uint8_t fieldT = 2</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -346,14 +365,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a3bef28806edf8f4c8cb82584b7e8c3cb" name="a3bef28806edf8f4c8cb82584b7e8c3cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bef28806edf8f4c8cb82584b7e8c3cb">&#9670;&#160;</a></span>pass</h2>
+<a id="a543ce0d7b42f492162d73ad4880d58c4" name="a543ce0d7b42f492162d73ad4880d58c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a543ce0d7b42f492162d73ad4880d58c4">&#9670;&#160;</a></span>pass</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* pass = &quot;Etellerandet&quot;</td>
+          <td class="memname">char* pass = &quot;Etellerandet&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -362,28 +381,28 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ab68b888c3d204a4403af6d1b22f6d07c" name="ab68b888c3d204a4403af6d1b22f6d07c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab68b888c3d204a4403af6d1b22f6d07c">&#9670;&#160;</a></span>server</h2>
+<a id="affeefede74d4b54c220f6a43dd2beabd" name="affeefede74d4b54c220f6a43dd2beabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affeefede74d4b54c220f6a43dd2beabd">&#9670;&#160;</a></span>server</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* server = &quot;api.thingspeak.com&quot;</td>
+          <td class="memname">char* server = &quot;api.thingspeak.com&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a587ba0cb07f02913598610049a3bbb79" name="a587ba0cb07f02913598610049a3bbb79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a587ba0cb07f02913598610049a3bbb79">&#9670;&#160;</a></span>ssid</h2>
+<a id="a0974771b2fba5718eed6eecd656aac59" name="a0974771b2fba5718eed6eecd656aac59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0974771b2fba5718eed6eecd656aac59">&#9670;&#160;</a></span>ssid</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* ssid = &quot;NameName&quot;</td>
+          <td class="memname">char* ssid = &quot;NameName&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
