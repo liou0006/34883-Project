@@ -6,6 +6,7 @@
 
 #include <LiquidCrystal.h>
 #include <Servo.h>
+#include "LCDPrint.h"
 
 // Define the pins that are connected to the LCD-display
 uint8_t rs = 2; ///< Reset pin for LCD.
@@ -36,7 +37,6 @@ int servoPos = 0; ///< Position of servo.
 void setup() {
   lcd.createChar(0, deg);
   lcd.begin(16,2);
-  lcdSetup();
 
   servo.attach(servoPin);
   servo.write(servoPos);
@@ -69,50 +69,4 @@ void loop() {
   // Perhaps do some other stuff
 }
 
-/**
- * @brief Clears the LCD and resets cursor.
- */
-void lcdSetup(){
-  lcd.clear();
-  lcd.setCursor(0,0);
-  // do stuff
-}
 
-/**
- * @brief Prints a super cool welcome message on the LCD, and switches back to T/H view.
- */
-void lcdPrintWelcome(){
-  lcd.print("Welcome home!");
-  delay(500);
-  for(int i = 0; i<16; i++){
-    delay(100);
-    lcd.scrollDisplayRight();
-  }
-  for(int i = 0; i<16; i++){
-    delay(100);
-    lcd.scrollDisplayLeft();
-  }
-  delay(500);
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Temp:");
-  lcd.setCursor(0,1);
-  lcd.print("Humi:");
-}
-
-/**
- * @brief Prints the temperature and humidity to the LCD
- *
- * @param T  Temperature variable.
- * @param H  Humidity variable.
- */
-void lcdPrintData(float T, float H){
-  lcd.setCursor(7,0);
-  lcd.print(T, 1);
-  lcd.write(byte(0));
-  lcd.print("C");
-
-  lcd.setCursor(7,1);
-  lcd.print(H, 1);
-  lcd.print("%");
-}
