@@ -17,6 +17,8 @@
 #define RED_LED 3
 #define GREEN_LED 2
 #define SOUND_SENSOR A0
+#define MS_PIN 8
+#define YELLOW_LED 4 
 
 //! create struct for rfid library
 MFRC522 rfid(Select_PIN, RST_PIN);
@@ -31,10 +33,11 @@ int uidLength = 0;
 int flagKey = 0; //! wait = 0, approve = 1, deny = 2
 int soundValue = 0; 
 int digValue = 0; 
+int ms_state = 0; 
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   SPI.begin();
   rfid.PCD_Init();  //! init MFRC522 (model of rfid)
@@ -44,6 +47,8 @@ void setup() {
   pinMode(GREEN_LED, OUTPUT);
   pinMode(7,INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(MS_PIN,INPUT); 
+  pinMode(YELLOW_LED,OUTPUT);
   //pinMode(SOUND_SENSOR, INPUT); 
 
   digitalWrite(RED_LED, HIGH);
@@ -55,6 +60,7 @@ void setup() {
 
 void loop() {
   soundListen();
+  motionDetect();
 
   if (rfid.PICC_IsNewCardPresent()) {  // look to see if chip registers something nearby
     if (rfid.PICC_ReadCardSerial()) {  // read chip
@@ -191,4 +197,13 @@ Serial.println(digValue);
 
 }
 
+void motionDetect() {
+  ms_state = digitalRead(MS_PIN); 
 
+  if(ms_state) {
+  digitalWrite(YELLOW_LED,HIGH);
+  } else {
+  digitalWrite(YELLOW_LED,LOW);
+  }
+
+}
