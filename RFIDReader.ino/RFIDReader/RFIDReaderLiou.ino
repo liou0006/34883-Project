@@ -53,24 +53,10 @@ int digValue = 0;
 int TSField = 1;
 State currentState = IDLE;
 
-// Wi-Fi configuration
-const char* ssid = "Ask Krat";
-const char* pass = "feature-hollow-truly";
-// WiFiClient client;
-// ThingSpeak configuration
-unsigned long channelID = 2808283;
-// Replace with your ThingSpeak channel ID
-const char* APIWriteKey = "G4QFBJM48LQQLI4T";  //
-const char* APIReadKey = "PUSZ92SJXXMO8BDG";
-const int postDelay = 20 * 1000;  // 20 seconds delay
-int data;                         //Initialized variable to store recieved data
-//the above is set correctly
-
-SoftwareSerial mySerial(1, 3);  //RX, TX
-
+SoftwareSerial mySerial(0,1);  //RX, TX
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   while (!Serial) {
     ;
   }
@@ -89,6 +75,9 @@ void setup() {
   currentState = IDLE;
 
   initLcd();
+
+  UARTSendData(2.0,3.0);
+
 }
 
 void loop() {
@@ -306,6 +295,12 @@ void RFIDREADER() {
     rfid.PICC_HaltA();       // halt PICC
     rfid.PCD_StopCrypto1();  // stop encryption on PCD
   }
+}
+
+void UARTSendData(float T, float H) {
+  Serial.print(T);
+  Serial.write(32);
+  Serial.print(H);
 }
 
 // Serial.print("EEPROM key is: ");
