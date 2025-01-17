@@ -11,20 +11,16 @@ class Backend{
         char *APIReadKey, char *APIWriteKey, char *server,
         uint8_t fieldT, uint8_t fieldH);
         void begin();
-        void getData(float *T, float *H);
+        void getTSFloatData(float *D, byte field);
     private:
         // WiFi and ThingSpeak variables
         char* _ssid;  ///< SSID of the connected network.
         char* _pass;  ///< Password of the connected network.
 
-        unsigned long _channelID;  ///< ChannelID of ThingSpeak channel. @see 
+        unsigned long _channelID;  ///< ChannelID of ThingSpeak channel. 
         char *_APIReadKey;  ///< Read API key of ThingSpeak channel.
-        char *_APIWriteKey;
-        char *_server;
-
-        // Define the fieldIDs
-        uint8_t _fieldT; ///< The ThingSpeak field-index of the temperature field.
-        uint8_t _fieldH; ///< The ThingSpeak field-index of the humidity field.
+        char *_APIWriteKey;  ///< Write API key of ThingSpeak channel.
+        char *_server;  ///< ThingSpeak server.
 };
 
 #endif
