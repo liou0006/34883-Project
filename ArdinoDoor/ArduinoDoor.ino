@@ -30,7 +30,8 @@ enum State {
   IDLE,
   APPROVED,
   DENIED,
-  PROCESSING
+  PROCESSING,
+  EXIT
 };
 
 //! create struct for rfid library
@@ -52,8 +53,9 @@ int soundValue = 0;  //not used
 int digValue = 0;
 int TSField = 1;
 State currentState = IDLE;
+bool status = 0;
 
-SoftwareSerial mySerial(0,1);  //RX, TX
+SoftwareSerial mySerial(0, 1);  //RX, TX
 
 void setup() {
   Serial.begin(9600);
@@ -75,9 +77,6 @@ void setup() {
   currentState = IDLE;
 
   initLcd();
-
-  UARTSendData(2.0,3.0);
-
 }
 
 void loop() {
@@ -89,12 +88,32 @@ void loop() {
       IdleState();
       checkNearbyRFID();
       delay(1000);
+
       break;
 
     case PROCESSING:
       Serial.println("In: Processing");
       ProcessState();
       RFIDREADER();
+
+      if (Serial.available() > 0) {
+        status = Serial.read();
+      }
+
+      Serial.println("Status of TS: " + status);
+
+      //communication between for status
+      if (isMatchingKey(uid, uidLength)) {
+        if (status == 1) {
+          currentState = EXIT;
+        } else {
+          currentState = APPROVED;
+        }
+      } else if (!isMatchingKey(uid, uidLength)) {
+        currentState = DENIED;
+      }
+
+
 
       delay(1000);
       break;
@@ -112,6 +131,10 @@ void loop() {
     case APPROVED:
       Serial.println("In: Approved");
       ApprovedState();
+      //status = 1;
+      Serial.print(status);
+
+
 
       /*
       motor do something
@@ -128,6 +151,16 @@ void loop() {
 
       currentState = IDLE;
       delay(2000);
+      break;
+
+    case EXIT:
+      //exit ocmmands
+      ExitState();
+      status = 0;
+      Serial.print(status);
+      //send status to ESP and therefore to TS
+      currentState = IDLE;
+      delay(1000);
       break;
   }
 }
@@ -239,6 +272,13 @@ void ApprovedState() {
   digitalWrite(LED_YELLOW, LOW);
 }
 
+void ExitState() {
+  writeToLCD(0, 0, "Bye bye");
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, HIGH);
+  digitalWrite(LED_YELLOW, LOW);
+}
+
 void printUID(byte* uid, int length) {
   Serial.print("Scanned UID: ");
   for (byte i = 0; i < uidLength; i++) {
@@ -292,15 +332,16 @@ void RFIDREADER() {
     } else if (!isMatchingKey(uid, uidLength)) {
       currentState = DENIED;
     }
+
     rfid.PICC_HaltA();       // halt PICC
     rfid.PCD_StopCrypto1();  // stop encryption on PCD
   }
 }
 
-void UARTSendData(float T, float H) {
-  Serial.print(T);
+//not used
+void UARTSendStatus(int status) {
+  Serial.print(status);
   Serial.write(32);
-  Serial.print(H);
 }
 
 // Serial.print("EEPROM key is: ");
