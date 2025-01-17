@@ -1,5 +1,7 @@
+//to use the ESP8266
 #include <ESP8266WiFi.h>
 #include <ThingSpeak.h>
+//library for communicating with the arduino uno
 #include <SoftwareSerial.h>
 // Wi-Fi configuration
 const char* ssid = "Ask Krat";
@@ -8,12 +10,14 @@ WiFiClient client;
 // ThingSpeak configuration
 unsigned long channelID = 2808283;
 // Replace with your ThingSpeak channel ID
+//the data from ThingSpeak
 const char* APIWriteKey = "G4QFBJM48LQQLI4T";  // Replace with your Write API Key
 const char* APIReadKey = "PUSZ92SJXXMO8BDG";
 const int postDelay = 20 * 1000;  // 20 seconds delay
 //int ledPin = D2;  // Pin connected to the LED (D4 for built-in LED on ESP8266)
 int data;  //Initialized variable to store recieved data
 
+//the pins on the ESP8266
 SoftwareSerial mySerial(1, 3);  //RX, TX
 
 
@@ -27,6 +31,7 @@ void setup() {
   // //digitalWrite(ledPin, LOW);  // Turn off the LED initially
   // Serial.println("Connecting to WiFi...");
   // WiFi.begin(ssid, pass);  // Connect to WiFi
+  //starting wifi
   WiFi.begin(ssid, pass);
 
   // //   // Wait for WiFi connection
@@ -38,6 +43,7 @@ void setup() {
   //    Serial.print("IP Address: ");
   //    Serial.println(WiFi.localIP());  // Print the assigned IP address
   // }
+  //checks if there is WiFi
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
@@ -88,7 +94,7 @@ void loop() {
   //Serial.println(data);
   //Serial.write(Serial.read());
 
-
+  //handles the recieved data string and converts it into two floats
   String receivedData = Serial.readStringUntil('\n');  // Read until newline
   // Parse the received tuple
   int commaIndex = receivedData.indexOf(',');
@@ -99,6 +105,7 @@ void loop() {
 
     if ((value1.toFloat() > -50.0 && (value1.toFloat() < 50.0)) && (value2.toFloat() > 0.0 && (value2.toFloat() < 100.0))) {
 
+      //writes the integer to ThingSpeak field 1
     if (ThingSpeak.setField(1, value1.toFloat())) {
       Serial.println("Field 1 updated");
       Serial.println(value1);
@@ -106,6 +113,7 @@ void loop() {
       Serial.println("Failed to update Field 1");
     }
 
+    //writes the integer to ThingSpeak field 2
     if (ThingSpeak.setField(2, value2.toFloat())) {
       Serial.println(value2);
       Serial.println("Field 2 updated");
@@ -120,6 +128,7 @@ void loop() {
   }
   }
   
+  //checks if the upload to ThingSpeak was succesfull
   int responseCode = ThingSpeak.writeFields(channelID, APIWriteKey);
 
   if (responseCode == 200) {
