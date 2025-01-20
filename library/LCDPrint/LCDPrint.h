@@ -2,9 +2,9 @@
 #define LCDPrint_H_
 
 #include "Arduino.h"
-#include <LiquidCrystal.h>
+#include <LiquidCrystal_I2C.h>
 
-void lcdPrintWelcome(LiquidCrystal lcd);
-void lcdPrintData(LiquidCrystal lcd, float T, float H);
+void lcdPrintWelcome(LiquidCrystal_I2C lcd);
+void lcdPrintData(LiquidCrystal_I2C lcd, float T, float H);
 
 #endif
