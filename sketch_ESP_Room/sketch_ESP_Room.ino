@@ -54,8 +54,7 @@ void loop() {
     // If the values are within the rated sensor values, post to ThingSpeak
     if (((H > 20) && (H < 90)) && ((T > -40) && (T < 125))) {
       // THIS HAPPENS TOO FAST. WHY DID I MAKE IT THIS WAY. ARRRRRRGH
-      backend.postTSFloatData(H, fieldH);
-      backend.postTSFloatData(T, fieldT);
+      backend.postTSFloatData(H, T, fieldH, fieldT);
     } else {
       //Serial.println("Readings ignored. Probably faulty.");
     }
