@@ -1,4 +1,4 @@
-#include "Backend.h"
+#include <Backend.h>
 #include <ESP8266WiFi.h>
 #include <ThingSpeak.h>
 
@@ -24,9 +24,11 @@ void Backend::begin() {
    @param D  Data variable.
    @param field  Field-index of ThingSpeak field. 1-indexed.
 */
-void Backend::postTSFloatData(float D, byte field) {
+void Backend::postTSFloatData(float Data1, float Data2, byte field1, byte field2) {
   client.connect(_server, 80);
-  ThingSpeak.writeField(_channelID, field, D, _APIWriteKey);
+  ThingSpeak.setField(field1, Data1);
+  ThingSpeak.setField(field2, Data2);
+  ThingSpeak.writeFields(_channelID, _APIWriteKey);
   client.stop();
 }
 
@@ -41,3 +43,7 @@ void Backend::getTSFloatData(float *D, byte field) {
   *D = ThingSpeak.readFloatField(_channelID, field, _APIReadKey);
   client.stop();
 }
+
+
+
+
