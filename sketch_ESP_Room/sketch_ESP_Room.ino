@@ -1,60 +1,63 @@
-
 /**
- * @file sketch_ESP_Room.ino
- *
- * @mainpage arrrrgh
- *
- * @section description Test
- * Does this even work?
- *
- * @author Mads Andersen & Lukas Tallbacka
- */
+   @file sketch_ESP_Room.ino
 
-//#include <ESP8266WiFi.h>
-//#include <ThingSpeak.h>
-#include "Backend.h"
+   @mainpage This is a mainpage
+   Is this shown on the mainpage?
 
-// WiFi and ThingSpeak variables
+   @section description Test
+   Does this even work?
+
+   @author Who knows
+*/
+
+#include <Backend.h>
+
+// WiFi and ThingSpeak variables.
 char *ssid = "NameName";  ///< SSID of the connected network.
 char *pass = "Etellerandet";  ///< Password of the connected network.
-//WiFiClient client;
 
-unsigned long channelID = 2808283;  ///< ChannelID of ThingSpeak channel. @see 
+unsigned long channelID = 2808283;  ///< ChannelID of ThingSpeak channel.
 char *APIReadKey = "PUSZ92SJXXMO8BDG";  ///< Read API key of ThingSpeak channel.
-char *APIWriteKey = "QIDQOTKIH000FKXO";
-char *server = "api.thingspeak.com";
+char *APIWriteKey = "G4QFBJM48LQQLI4T"; ///< Write API key of ThingSpeak channel.
+char *server = "api.thingspeak.com";  ///< ThingSpeak server.
 
 
 // Define variables for the program
-uint8_t fieldT = 2; ///< The ThingSpeak field-index of the temperature field.
-uint8_t fieldH = 1; ///< The ThingSpeak field-index of the humidity field.
+byte fieldT = 2; ///< The ThingSpeak field-index of the temperature field.
+byte fieldH = 1; ///< The ThingSpeak field-index of the humidity field.
 float T = 0;  ///< Temperature variable.
 float H = 0;  ///< Humidity variable.
 //variable!! yuppiii
 
-Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server, fieldT, fieldH);
+Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
 
 void setup() {
   //WiFi.begin(ssid, pass);
   backend.begin();
   Serial.begin(9600);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
   //Serial1.begin(9600);
 }
 
 void loop() {
-  delay(10000);
-  backend.getData(&T, &H);
-  UARTSendData(T, H);
-}
+  // If all the sensor data has been sent, extract the values as float
 
-/**
- * @brief Sends the temperature and humidity data to Arduino connected to UART1.
- *
- * @param T  Temperature variable.
- * @param H  Humidity variable.
- */
-void UARTSendData(float T, float H) {
-  Serial1.print(T);
-  Serial1.write(32);
-  Serial1.print(H);
+  if (Serial.available() >= 9) { //idk if it's actually 12 bytes long
+    T = Serial.parseFloat();
+    H = Serial.parseFloat();
+    Serial.print(T);
+    Serial.println(H);
+
+    // If the values are within the rated sensor values, post to ThingSpeak
+    if (((H > 20) && (H < 90)) && ((T > -40) && (T < 125))) {
+      // THIS HAPPENS TOO FAST. WHY DID I MAKE IT THIS WAY. ARRRRRRGH
+      backend.postTSFloatData(H, fieldH);
+      backend.postTSFloatData(T, fieldT);
+    } else {
+      //Serial.println("Readings ignored. Probably faulty.");
+    }
+  }
 }

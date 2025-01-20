@@ -1,4 +1,7 @@
-/*
+/**
+* @author Liou Xia & Oscar Sjelle 
+* @file Arduino_door.ino
+*
 * a public library for RFID has been downloaded
  * Created by ArduinoGetStarted.com
  *
@@ -26,6 +29,7 @@
 #define SOUND_SENSOR A0
 #define EEPROM_ADDRESS 0
 
+//! grouped variables for states
 enum State {
   IDLE,
   APPROVED,
@@ -66,8 +70,8 @@ const int postDelay = 20 * 1000;  // 20 seconds delay
 int data;                         //Initialized variable to store recieved data
 //the above is set correctly
 
-SoftwareSerial mySerial(1, 3);  //RX, TX
-
+//! initialize softwareserial library for communication between ESP & Uno
+SoftwareSerial mySerial(1, 3);  //RX, TX 
 
 void setup() {
   Serial.begin(115200);
@@ -97,6 +101,12 @@ void setup() {
 void loop() {
   //soundListen();
 
+
+  /**
+ * @brief the code is setup as a statemachine according to key value and what to display. 
+ * 
+ *
+ */
   switch (currentState) {
     case IDLE:
       Serial.println("In: Idle");
@@ -238,6 +248,13 @@ void loop() {
 }
 
 
+/**
+ * @brief compares the stored key value with the read value of the scanned key. Returns true or false
+ *
+ * @param uid  scanned key value.
+ * @param length  length of scanned key value.
+ */
+
 bool isMatchingKey(byte* uid, int length) {
   if (length != sizeof(storedKey)) {
     Serial.println("Mismatch in length");
@@ -309,6 +326,15 @@ void lcdAccesDenied() {
 
 //   delay(10);
 // }
+
+
+/**
+ * @brief write text to display on LCD as a fnc
+ *
+ * @param row   what row to write to
+ * @param colm  what colm to write to
+ * @param string  what text to display
+ */
 
 void writeToLCD(int row, int colm, char string[]) {
   lcd.clear();
