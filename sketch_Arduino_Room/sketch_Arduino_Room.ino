@@ -55,7 +55,7 @@ void setup() {
 
 void loop() {
   // logging sensor values every 2 seconds
-  if(sensorFlag == 1){
+  if(sensorFlag == 6){
     int chk = DHT.read11(DHT11_PIN);
     int sensorValue = analogRead(A0);
     float tempValue = (5.0 / 1023.0) * sensorValue * 100;
@@ -70,7 +70,7 @@ void loop() {
     Serial1.print(humValue);
 
     // If the temperature is too high, "open window"
-    if(tempValue >= 22){
+    if(tempValue >= 35){
       servoPos = 90;
       servo.write(servoPos);
     } else {
@@ -85,5 +85,5 @@ void loop() {
 
 void TimerHandler()
 {
-  sensorFlag = 1;
+  sensorFlag += 1;
 }
