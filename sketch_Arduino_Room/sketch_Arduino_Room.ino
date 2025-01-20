@@ -1,21 +1,26 @@
-//#include <dht.h> TEMP
-#include <LiquidCrystal.h>
+/**
+ * @file Dummy_ESP.ino
+ *
+ * @section description Test
+ * Does this even work?
+ *
+ * @author Mads Andersen & Lukas Tallbacka
+ */
+
+
+#include <dht.h>
+#include <LiquidCrystal_I2C.h>
 #include <Servo.h>
-#include <SoftwareSerial.h>
-//#include <LCDPrint.h> TEMP
+#include <LCDPrint.h>
 
+#define USE_TIMER_2 true
+#include <TimerInterrupt.h>
+#define TIMER_INTERVAL_MS  10000L
 
-//dht DHT; TEMP
-const byte DHT11_PIN 4
+dht DHT;
+const byte DHT11_PIN = 4;
 
-// Define the pins that are connected to the LCD-display
-const byte rs = 2; ///< Reset pin for LCD.
-const byte enable = 3; ///< Enable pin for LCD.
-const byte D4 = 10;  ///< D4 pin for LCD.
-const byte D5 = 11;  ///< D5 pin for LCD.
-const byte D6 = 12;  ///< D6 pin for LCD.
-const byte D7 = 13;  ///< D7 pin for LCD.
-LiquidCrystal lcd(rs, enable, D4, D5, D6, D7);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 /// Degree symbol for the LCD.
 const byte deg[8] = {
@@ -23,62 +28,62 @@ const byte deg[8] = {
   B00000, B00000, B00000,
 };
 
-/// Software serial setup
-int data;                    //Initialized variable to store recieved data
-SoftwareSerial s(5,6);       //Started SoftwareSerial at RX and TX pin of ESP8266/NodeMCU
-
 // Servo stuff
 Servo servo;  ///< Create servo class.
 const byte servoPin = 37;  ///< Pin for motor position.
 int servoPos = 0; ///< Position of servo.
 
-//count used for running certain code intermittently 
-unsigned int count
+byte sensorFlag = 0;
+
 
 void setup() {
+  ITimer2.init();
+  ITimer2.attachInterruptInterval(TIMER_INTERVAL_MS, TimerHandler);
+
   Serial.begin(9600);
-  s.begin(9600);
+  Serial1.begin(9600);
 
   lcd.createChar(0, deg);
-  lcd.begin(16,2);
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  lcd.setCursor(0, 0);
 
   servo.attach(servoPin);
   servo.write(servoPos);
-  Serial.begin(9600);
-  Serial1.begin(9600);
 }
 
 void loop() {
-  // If we have received 2 floats (2x4 bytes) and some other split character, we read the data and post it to the LCD
-  if(Serial1.available() >= 9){
-    float T = Serial1.parseFloat();
-    float H = Serial1.parseFloat();
-    //getData(&T, &H);
-    
+  // logging sensor values every 2 seconds
+  if(sensorFlag == 1){
+    int chk = DHT.read11(DHT11_PIN);
+    int sensorValue = analogRead(A0);
+    float tempValue = (5.0 / 1023.0) * sensorValue * 100;
+    float humValue = DHT.humidity;
     lcd.clear();
-    lcdPrintWelcome(lcd);
-    lcdPrintData(lcd, T, H);
+    lcdPrintData(lcd, tempValue, humValue);
+    Serial.println(humValue); 
+    Serial.println(String(tempValue));
+
+    Serial1.print(tempValue);
+    Serial1.write(32);
+    Serial1.print(humValue);
 
     // If the temperature is too high, "open window"
-    if(T >= 22){
+    if(tempValue >= 22){
       servoPos = 90;
       servo.write(servoPos);
     } else {
       servoPos = 0;
       servo.write(servoPos);
     }
-  }
 
-  // logging sensor values every 2 seconds
-  if(count%20 == 0){
-    int sensorValue = analogRead(A0);
-    float tempValue = (5.0 / 1023.0) * sensorValue * 100;
-
-    //s.print(String(DHT.humidity)+ "," + String(tempValue) + "\n"); TEMP
-    //Serial.println(DHT.humidity); TEMP
-    //Serial.println(String(tempValue)); TEMP
+    sensorFlag = 0;
   }
-  
-  delay(10);
-  count++
+}
+
+
+void TimerHandler()
+{
+  sensorFlag = 1;
 }

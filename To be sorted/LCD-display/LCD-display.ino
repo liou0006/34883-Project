@@ -48,9 +48,9 @@ void setup() {
 
 void loop() {
   // If we have received 2 floats (2x4 bytes) and some other split character, we read the data and post it to the LCD
-  if(Serial1.available() >= 9){
-    float T = Serial1.parseFloat();
-    float H = Serial1.parseFloat();
+  if(Serial1.available() >= 0){
+    float T = 0;
+    float H = 0;
     //getData(&T, &H);
     
     lcd.clear();
