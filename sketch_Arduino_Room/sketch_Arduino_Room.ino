@@ -3,43 +3,43 @@
 *
 *
 *@section description Description
-*Logs data from the sensors and displays them. Data is also send to the ESP through UART for transmitting to ThingSpeak.
+*Logs data from the sensors and displays them on an LCD. Data is also sent to an ESP8266 through UART for transmitting to ThingSpeak.
 *
 *
 *
 *@section circuit Circuit
-*How to connect the DHT11:
-*-Signal (DHT) to D4 (arduino)
+*<b>DHT11 wiring</b>\n 
+*-Pin 1 (Signal) to D4.
 *
-*How to connect TMP36GZ:
-*-Vout (TMP) to A0 (arduino)
+*<b>LM35 wiring</b>\n 
+*-Pin 2 (Vout) to A0.
 *
 *
-*How to connect arduino to ESP8266:
-*-D18 (arduino) to Rx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
-*-D19 (arduino) to Tx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
+*<b>Connection to ESP8266</b>\n 
+*-D18/TX1 (ATMEGA) to RX (ESP)\n 
+*-D19/RX1 (ATMEGA) to TX (ESP)
 *
-*How to connect servo:
-*-D37 (arduino Mega) to servo signal 
+*<b>Servo wiring</b>\n 
+*-Pin 1 (Signal) to D37.
 *
-*How to connect lcd:
-*-D20 (arduino) to SDA (LCD)
-*-D21 (arduino) to SCL (LCD)
+*<b>LCD wiring</b>\n 
+*-D20/SDA to SDA
+*-D21/SCL to SCL
 *
 *
 *@section libraries Libraries
-*-dht.h (Download a zip file of this library from this link: https://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-an-arduino/)
-*-LiquidCrystal_I2C.h (to use the LCD-display with the I2C module)
-*-Servo.h (to control the position of servo)
-*-LCDPrint.h (personal library for LCD)
-*-TimerInterrupt.h (to make hardware interrupts)
+*-dht.h (Link to the used library: https://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-an-arduino/)\n 
+*-LiquidCrystal_I2C.h (Use LCD with an I2C module)\n 
+*-Servo.h (Position control of servo)\n 
+*-LCDPrint.h (Custom library for comon LCD functions)\n 
+*-TimerInterrupt.h (Timer interrupts)
 *
 *
 *@section author Authors
 *Created by Ask Krat, Christian Houmann, Mads Andersen & Lukas Tallbacka
 *
 *
-*@date 20/1/2025
+*@date 21/1/2025
 *
 **/
 
@@ -55,6 +55,7 @@
 dht DHT; ///< Create a DHT object to interact with the DHT11 sensor
 const byte DHT11_PIN = 4; ///< Pin for humidity sensor.
 
+/// Construct an LCD object. Initiate all cells.
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // Servo stuff
