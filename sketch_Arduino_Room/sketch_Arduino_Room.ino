@@ -43,14 +43,14 @@
 *
 **/
 
-#include <dht.h> ///< Include the library for DHT sensors
+#include <dht.h>
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <LCDPrint.h>
 
-#define USE_TIMER_2 true
+#define USE_TIMER_2 true  ///< Initiate Timer2 for interrupt.
 #include <TimerInterrupt.h>
-#define TIMER_INTERVAL_MS  10000L
+#define TIMER_INTERVAL_MS  10000L   ///< Initiate counter value for Timer2 (10 seconds).
 
 dht DHT; ///< Create a DHT object to interact with the DHT11 sensor
 const byte DHT11_PIN = 4; ///< Pin for humidity sensor.
