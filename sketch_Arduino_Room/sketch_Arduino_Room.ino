@@ -12,8 +12,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <LCDPrint.h>
-#include "Lukasisdumb"
-#include "MadsIsDumb.h"
 
 #define USE_TIMER_2 true
 #include <TimerInterrupt.h>
@@ -35,12 +33,24 @@ Servo servo;  ///< Create servo class.
 const byte servoPin = 37;  ///< Pin for motor position.
 int servoPos = 0; ///< Position of servo.
 
-byte sensorFlag = 0;
+byte MeasFlag = 0;
+byte count = 0;
 int IsHome = 0;
+
+const byte MovPin = 2;
+byte MovFlag = 0;
+
+const byte BuzzerPin = 11;
+const byte RstButton = 5;
 
 void setup() {
   ITimer2.init();
   ITimer2.attachInterruptInterval(TIMER_INTERVAL_MS, TimerHandler);
+
+  pinMode(MovPin, INPUT);
+  pinMode(BuzzerPin, OUTPUT);
+  pinMode(RstButton, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(MovPin), MovISR, RISING);
 
   Serial.begin(9600);
   Serial1.begin(9600);
@@ -56,17 +66,32 @@ void setup() {
 }
 
 void loop() {
+
+  if(MovFlag == 1) {
+    while(digitalRead(RstButton) == 1){
+      analogWrite(BuzzerPin, 128);
+      delay(50);
+      analogWrite(BuzzerPin, 0);
+      delay(50);
+    }
+    analogWrite(BuzzerPin, 0);
+    MovFlag = 0;
+  }
   // logging sensor values every 60 seconds
-  if(sensorFlag == 6){
+  if(MeasFlag == 1){
+    count += 1;
     int chk = DHT.read11(DHT11_PIN);
     int sensorValue = analogRead(A0);
-    float tempValue = (5.0 / 1023.0) * sensorValue * 100;
+    float tempValue = ((float)map(sensorValue, 0, 1023, 0, 5000))/10.0;
+
     float humValue = DHT.humidity;
     lcd.clear();
-
-    Serial1.print(tempValue);
-    Serial1.write(32);
-    Serial1.print(humValue);
+    if(count == 6){
+      Serial1.print(tempValue);
+      Serial1.write(32);
+      Serial1.print(humValue);
+      count = 0;
+    }
 
     if (IsHome == 1) {
       lcdPrintData(lcd, tempValue, humValue);
@@ -80,7 +105,7 @@ void loop() {
         servo.write(servoPos);
       }
     }
-    sensorFlag = 0;
+    MeasFlag = 0;
   }
 
   if (Serial1.available() > 0) { 
@@ -89,7 +114,12 @@ void loop() {
 }
 
 
-void TimerHandler()
-{
-  sensorFlag += 1;
+void TimerHandler(){
+  MeasFlag = 1;
+}
+
+void MovISR(){
+  if(IsHome == 0){
+    MovFlag = 1;
+  }
 }
