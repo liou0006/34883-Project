@@ -43,7 +43,7 @@
 *
 **/
 
-#include <dht.h>
+#include <dht.h> ///< Include the library for DHT sensors
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <LCDPrint.h>
@@ -52,8 +52,8 @@
 #include <TimerInterrupt.h>
 #define TIMER_INTERVAL_MS  10000L
 
-dht DHT;
-const byte DHT11_PIN = 4;
+dht DHT; ///< Create a DHT object to interact with the DHT11 sensor
+const byte DHT11_PIN = 4; 
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -91,10 +91,10 @@ void setup() {
 void loop() {
   // logging sensor values every 60 seconds
   if(sensorFlag == 6){
-    int chk = DHT.read11(DHT11_PIN);
-    int sensorValue = analogRead(A0);
-    float tempValue = (5.0 / 1023.0) * sensorValue * 100;
-    float humValue = DHT.humidity;
+    int chk = DHT.read11(DHT11_PIN); ///< Read the data from the DHT11 sensor
+    int sensorValue = analogRead(A0); ///< Read the analog value from TMP36 temperature sensor on pin A0
+    float tempValue = (5.0 / 1023.0) * sensorValue * 100; ///< Convert the analog value to a temperature in Celsius
+    float humValue = DHT.humidity; ///< The humidity value from the DHT device 
     lcd.clear();
 
     Serial1.print(tempValue);
