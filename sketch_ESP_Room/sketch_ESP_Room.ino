@@ -25,8 +25,10 @@ char *server = "api.thingspeak.com";  ///< ThingSpeak server.
 // Define variables for the program
 byte fieldT = 2; ///< The ThingSpeak field-index of the temperature field.
 byte fieldH = 1; ///< The ThingSpeak field-index of the humidity field.
+byte fieldIsHome = 3;
 float T = 0;  ///< Temperature variable.
 float H = 0;  ///< Humidity variable.
+int IsHome = 0;
 //variable!! yuppiii
 
 Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
@@ -37,7 +39,6 @@ void setup() {
   Serial.begin(9600);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
-    Serial.println("Connecting to WiFi...");
   }
   //Serial1.begin(9600);
 }
@@ -48,15 +49,17 @@ void loop() {
   if (Serial.available() >= 9) { //idk if it's actually 12 bytes long
     T = Serial.parseFloat();
     H = Serial.parseFloat();
-    Serial.print(T);
-    Serial.println(H);
 
     // If the values are within the rated sensor values, post to ThingSpeak
     if (((H > 20) && (H < 90)) && ((T > -40) && (T < 125))) {
-      // THIS HAPPENS TOO FAST. WHY DID I MAKE IT THIS WAY. ARRRRRRGH
       backend.postTSFloatData(H, T, fieldH, fieldT);
     } else {
       //Serial.println("Readings ignored. Probably faulty.");
     }
+    delay(20000);
+    backend.getTSintData(&IsHome, fieldIsHome);
+    Serial.print(IsHome);
   }
+  
+
 }
