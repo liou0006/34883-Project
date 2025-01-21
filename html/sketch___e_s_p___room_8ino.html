@@ -144,6 +144,7 @@ Variables</h2></td></tr>
 <tr class="memdesc:ab78414b5453bd98e3c2ad64afb384858"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the humidity field.  <br /></td></tr>
 <tr class="separator:ab78414b5453bd98e3c2ad64afb384858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac51bed25009f3d7180cf495ee994f9af" id="r_ac51bed25009f3d7180cf495ee994f9af"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac51bed25009f3d7180cf495ee994f9af">fieldIsHome</a> = 3</td></tr>
+<tr class="memdesc:ac51bed25009f3d7180cf495ee994f9af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ThingSpeak field-index of the home status field.  <br /></td></tr>
 <tr class="separator:ac51bed25009f3d7180cf495ee994f9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e59dd36aafb310776e617456b9415b5" id="r_a1e59dd36aafb310776e617456b9415b5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e59dd36aafb310776e617456b9415b5">T</a> = 0</td></tr>
 <tr class="memdesc:a1e59dd36aafb310776e617456b9415b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature variable.  <br /></td></tr>
@@ -152,28 +153,28 @@ Variables</h2></td></tr>
 <tr class="memdesc:ab9f9100cd00f9c578d17142734dfdb47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Humidity variable.  <br /></td></tr>
 <tr class="separator:ab9f9100cd00f9c578d17142734dfdb47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a062f28bb54490143631a86350e52cf42" id="r_a062f28bb54490143631a86350e52cf42"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a062f28bb54490143631a86350e52cf42">IsHome</a> = 0</td></tr>
+<tr class="memdesc:a062f28bb54490143631a86350e52cf42"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Boolean" status indicator of someone being home.  <br /></td></tr>
 <tr class="separator:a062f28bb54490143631a86350e52cf42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3626a8754ef37859db4472ba8c75e62" id="r_ad3626a8754ef37859db4472ba8c75e62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_backend.html">Backend</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3626a8754ef37859db4472ba8c75e62">backend</a> (<a class="el" href="sketch___e_s_p___door_8ino.html#a587ba0cb07f02913598610049a3bbb79">ssid</a>, <a class="el" href="sketch___e_s_p___door_8ino.html#a3bef28806edf8f4c8cb82584b7e8c3cb">pass</a>, <a class="el" href="sketch___e_s_p___door_8ino.html#ac45cf487b7a438e2176288955a338f25">channelID</a>, <a class="el" href="sketch___e_s_p___door_8ino.html#a6663c625bbcc560b54fc2bf5096de079">APIReadKey</a>, <a class="el" href="sketch___e_s_p___door_8ino.html#a808707edd7fbbe9b3d55ca2a6e0aaf59">APIWriteKey</a>, <a class="el" href="#affeefede74d4b54c220f6a43dd2beabd">server</a>)</td></tr>
+<tr class="memdesc:ad3626a8754ef37859db4472ba8c75e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates backend object with WiFi and ThingSpeak parameters.  <br /></td></tr>
 <tr class="separator:ad3626a8754ef37859db4472ba8c75e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h1><a class="anchor" id="description"></a>
 Description</h1>
-<p>Receives data from arduino and transmits it through WiFi to ThingSpeak</p>
+<p>Receives data from ATMEGA2560 microcontroller, and transmits it through WiFi to ThingSpeak.</p>
 <h1><a class="anchor" id="circuit"></a>
 Circuit</h1>
-<p>How to connect the DHT11: -Signal (DHT) to D4 (arduino)</p>
-<p>How to connect TMP36GZ: -Vout (TMP) to A0 (arduino)</p>
-<p>How to connect arduino to ESP8266: -D18 (arduino) to Rx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket) -D19 (arduino) to Tx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)</p>
-<p>How to connect servo: -D37 (arduino Mega) to servo signal</p>
-<p>How to connect lcd: -D20 (arduino) to SDA (LCD) -D21 (arduino) to SCL (LCD)</p>
+<p>Just need to connect the ESP8266's UART pins to the ATMEGA2560:<br  />
+ -D18/TX1 (ATMEGA2560) to RX (ESP)<br  />
+ -D19/RX1 (ATMEGA2560) to TX (ESP)</p>
 <h1><a class="anchor" id="libraries"></a>
 Libraries</h1>
-<p>-Backend.h (personal library that contains functions for WiFi and ThingSpeak)</p>
+<p>-Backend.h (custom library for connecting to WiFi and ThingSpeak)</p>
 <h1><a class="anchor" id="author"></a>
 Authors</h1>
 <p>Created by Ask Krat, Christian Houmann, Mads Andersen &amp; Lukas Tallbacka</p>
-<dl class="section date"><dt>Date</dt><dd>20/1/2025 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>21/1/2025 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="afe461d27b9c48d5921c00d521181f12f" name="afe461d27b9c48d5921c00d521181f12f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe461d27b9c48d5921c00d521181f12f">&#9670;&#160;</a></span>loop()</h2>
@@ -281,6 +282,8 @@ Authors</h1>
       </table>
 </div><div class="memdoc">
 
+<p>Creates backend object with WiFi and ThingSpeak parameters. </p>
+
 </div>
 </div>
 <a id="ac45cf487b7a438e2176288955a338f25" name="ac45cf487b7a438e2176288955a338f25"></a>
@@ -327,6 +330,8 @@ Authors</h1>
       </table>
 </div><div class="memdoc">
 
+<p>The ThingSpeak field-index of the home status field. </p>
+
 </div>
 </div>
 <a id="ae71620b523d801a41937f80cf2e51feb" name="ae71620b523d801a41937f80cf2e51feb"></a>
@@ -372,6 +377,8 @@ Authors</h1>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>"Boolean" status indicator of someone being home. </p>
 
 </div>
 </div>
