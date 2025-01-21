@@ -3,39 +3,25 @@
 *
 *
 *@section description Description
-*Receives data from arduino and transmits it through WiFi to ThingSpeak
+*Receives data from ATMEGA2560 microcontroller, and transmits it through WiFi to ThingSpeak.
 *
 *
 *@section circuit Circuit
-*How to connect the DHT11:
-*-Signal (DHT) to D4 (arduino)
 *
-*How to connect TMP36GZ:
-*-Vout (TMP) to A0 (arduino)
-*
-*
-*How to connect arduino to ESP8266:
-*-D18 (arduino) to Rx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
-*-D19 (arduino) to Tx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
-*
-*How to connect servo:
-*-D37 (arduino Mega) to servo signal 
-*
-*How to connect lcd:
-*-D20 (arduino) to SDA (LCD)
-*-D21 (arduino) to SCL (LCD)
-*
+* Just need to connect the ESP8266's UART pins to the ATMEGA2560:\n 
+*-D18/TX1 (ATMEGA2560) to RX (ESP)\n 
+*-D19/RX1 (ATMEGA2560) to TX (ESP)
 *
 *
 *@section libraries Libraries
-*-Backend.h (personal library that contains functions for WiFi and ThingSpeak)
+*-Backend.h (custom library for connecting to WiFi and ThingSpeak)
 *
 *
 *@section author Authors
 *Created by Ask Krat, Christian Houmann, Mads Andersen & Lukas Tallbacka
 *
 *
-*@date 20/1/2025
+*@date 21/1/2025
 *
 **/
 
@@ -54,12 +40,13 @@ char *server = "api.thingspeak.com";  ///< ThingSpeak server.
 // Define variables for the program
 byte fieldT = 2; ///< The ThingSpeak field-index of the temperature field.
 byte fieldH = 1; ///< The ThingSpeak field-index of the humidity field.
-byte fieldIsHome = 3;
+byte fieldIsHome = 3; ///< The ThingSpeak field-index of the home status field.
 float T = 0;  ///< Temperature variable.
 float H = 0;  ///< Humidity variable.
-int IsHome = 0;
-//variable!! yuppiii
+int IsHome = 0; ///< "Boolean" status indicator of someone being home.
+//variables!! yuppiii
 
+/// Creates backend object with WiFi and ThingSpeak parameters
 Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
 
 void setup() {
@@ -73,9 +60,8 @@ void setup() {
 }
 
 void loop() {
-  // If all the sensor data has been sent, extract the values as float
-
-  if (Serial.available() >= 9) { //idk if it's actually 12 bytes long
+  // If all the sensor data has been sent (2x 4-byte floats and a space), extract the values as float
+  if (Serial.available() >= 9) {
     T = Serial.parseFloat();
     H = Serial.parseFloat();
 
@@ -85,6 +71,8 @@ void loop() {
     } else {
       //Serial.println("Readings ignored. Probably faulty.");
     }
+
+    // Wait for another possible communication with ThingSpeak, then get IsHome status
     delay(20000);
     backend.getTSintData(&IsHome, fieldIsHome);
     Serial.print(IsHome);
