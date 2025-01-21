@@ -1,8 +1,8 @@
 /**
-* @author Liou Xia & Oscar Sjelle 
-* @file Arduino_door.ino
-*
-* a public library for RFID has been downloaded
+ * @author Liou Xia & Oscar Sjelle
+ * @file Arduino_door.ino
+ *
+ * a public library for RFID has been downloaded
  * Created by ArduinoGetStarted.com
  *
  * The code has been modified for our purpose
@@ -13,12 +13,6 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <LiquidCrystal_I2C.h>
-//#include <ESP8266WiFi.h>
-#include <ThingSpeak.h>
-#include <EEPROM.h>
-#include <ArduinoJson.h>
-#include <ThingSpeak.h>
-#include <SoftwareSerial.h>
 
 //! defines
 #define Select_PIN 10
@@ -27,14 +21,14 @@
 #define LED_YELLOW 7
 #define LED_GREEN 4
 #define SOUND_SENSOR A0
-#define EEPROM_ADDRESS 0
 
-//! grouped variables for states
+//! grouped variables for state machine
 enum State {
   IDLE,
   APPROVED,
   DENIED,
-  PROCESSING
+  PROCESSING,
+  EXIT
 };
 
 //! create struct for rfid library
@@ -43,194 +37,80 @@ MFRC522 rfid(Select_PIN, RST_PIN);
 //! Creates an LCD object. Parameters: (rs, enable, d4, d5, d6, d7)
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+//! UID keys
+//byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F };  //Oscars Key
+byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
+
 //! variables
 byte uid[4];
-byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F }; //Oscars Key
-//byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
-//byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0E }; //tset
-
-
 int uidLength = 0;
-int flagKey = 0;  //! wait = 0, approve = 1, deny = 2
 int soundValue = 0;
 int digValue = 0;
-int TSField = 1;
-State currentState = IDLE;
-
-// Wi-Fi configuration
-const char* ssid = "Ask Krat";
-const char* pass = "feature-hollow-truly";
-// WiFiClient client;
-// ThingSpeak configuration
-unsigned long channelID = 2808283;
-// Replace with your ThingSpeak channel ID
-const char* APIWriteKey = "G4QFBJM48LQQLI4T";  //
-const char* APIReadKey = "PUSZ92SJXXMO8BDG";
-const int postDelay = 20 * 1000;  // 20 seconds delay
-int data;                         //Initialized variable to store recieved data
-//the above is set correctly
-
-//! initialize softwareserial library for communication between ESP & Uno
-SoftwareSerial mySerial(1, 3);  //RX, TX 
+State currentState;
+byte status = 0;
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial) {
-    ;
-  }
-
-  //WiFi.begin(ssid, pass);
+  Serial.begin(9600);
+  while (!Serial) { ; }
 
   SPI.begin();
   rfid.PCD_Init();  //! init MFRC522 (model of rfid)
-  Serial.println("Tap RFID/NFC Tag on reader");
+  initLcd();
 
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
-
   pinMode(7, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   //pinMode(SOUND_SENSOR, INPUT);
 
   currentState = IDLE;
 
-  initLcd();
+  Serial.println("Tap RFID/NFC Tag on reader");
 }
 
 void loop() {
-  //soundListen();
 
+    /**
+   * @brief the code is setup as a statemachine according to key value and what to display.
+   *
+   *
+   */
 
-  /**
- * @brief the code is setup as a statemachine according to key value and what to display. 
- * 
- *
- */
   switch (currentState) {
     case IDLE:
-      Serial.println("In: Idle");
-      writeToLCD(0, 0, "Scanning...");
-      digitalWrite(LED_GREEN, LOW);
-      digitalWrite(LED_RED, LOW);
-      digitalWrite(LED_YELLOW, LOW);
-      //lcdAccesWait();
-      if (rfid.PICC_IsNewCardPresent()) {
-        currentState = PROCESSING;
-      }
-
+      IdleState();
+      checkNearbyRFID();
       delay(1000);
+
       break;
 
     case PROCESSING:
-      Serial.println("In: Processing");
-      writeToLCD(0, 0, "PROCESSING");
-      digitalWrite(LED_YELLOW, HIGH);
-      digitalWrite(LED_RED, LOW);
-      digitalWrite(LED_GREEN, LOW);
+      ProcessState();
+      RFIDREADER();
 
-      if (rfid.PICC_IsNewCardPresent()) {  // look to see if chip registers something nearby
-        if (rfid.PICC_ReadCardSerial()) {  // read chip
-          MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
-
-          uidLength = rfid.uid.size;
-
-          for (byte i = 0; i < uidLength; i++) {
-            //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
-            uid[i] = rfid.uid.uidByte[i];
-          }
-
-          Serial.print("Scanned UID: ");
-          for (byte i = 0; i < uidLength; i++) {
-            Serial.print(uid[i] < 0x10 ? " 0" : " ");
-            Serial.print(uid[i], HEX);
-          }
-          Serial.println();
-
-          Serial.print("Stored key is: ");
-          for (byte i = 0; i < sizeof(storedKey); i++) {
-            Serial.print(uid[i] < 0x10 ? " 0" : " ");
-            Serial.print(uid[i], HEX);
-          }
-
-          Serial.println();
-
-          // Serial.print("EEPROM key is: ");
-          // for (byte i = 0; i < sizeof(4); i++) {
-          //   Serial.print(keyFromEEPROM[i] < 0x10 ? " 0" : " ");
-          //   Serial.print(keyFromEEPROM[i], HEX);
-          // }
-
-          Serial.println();
-
-          // for (byte i = 0; i < uidLength; i++) {
-          //   //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
-          //   ThingSpeak.setField(3, uid[i]);
-          // }
-
-          // int responseCode = ThingSpeak.writeFields(channelID, APIWriteKey);
-          // if (responseCode == 200) {
-          //   Serial.println("Data sent success");
-          // } else {
-          //   Serial.println("Failed to send");
-          // }
-
-          if (isMatchingKey(uid, uidLength)) {
-
-            /*
-            motor do something
-            send user UID to thingspeak
-            */
-
-            Serial.println("Key approved");
-
-            // for (byte i = 0; i < uidLength; i++) {
-            //   //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
-            //   EEPROM.write(EEPROM_ADDRESS + (i * 1), uid[i]);
-            // }
-
-            // for (byte i = 0; i < uidLength; i++) {
-            //   //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
-            //   Serial.println(EEPROM.read(EEPROM_ADDRESS + (i * 1)), HEX);
-            // }
-
-            //sizeof(float
-
-            currentState = APPROVED;
-          } else if (!isMatchingKey(uid, uidLength)) {
-            Serial.println("Wrong key");
-            writeToLCD(0, 0, "No Access");
-            currentState = DENIED;
-          }
-
-          rfid.PICC_HaltA();       // halt PICC
-          rfid.PCD_StopCrypto1();  // stop encryption on PCD
-        }
-      }
       delay(1000);
       break;
 
     case DENIED:
-      Serial.println("In: DENIED");
-      lcdAccesDenied();
-      //do alarm
-      digitalWrite(LED_GREEN, LOW);
-      digitalWrite(LED_RED, HIGH);
-      digitalWrite(LED_YELLOW, LOW);
-      delay(1000);
+      DeniedState();
+      //Alarm();
+      //shutdown;
 
       currentState = IDLE;
+      delay(1000);
 
       break;
 
     case APPROVED:
-      Serial.println("In: APPROVED");
-      writeToLCD(0, 0, "Welcome: someone");
-      digitalWrite(LED_GREEN, HIGH);
-      digitalWrite(LED_RED, LOW);
-      digitalWrite(LED_YELLOW, LOW);
+      ApprovedState();
+      status = 1;
+      Serial.write(status);
 
       /*
+      motor do something
+      send user UID to thingspeak
+      
       check for if the temperature and humidity is good. need to receive data from tingspeak
       if not
       open windows / motor
@@ -239,14 +119,21 @@ void loop() {
       show temperature and humidity
       */
 
-
       currentState = IDLE;
-
       delay(2000);
+
+      break;
+
+    case EXIT:
+      ExitState();
+      status = 0;
+      Serial.write(status);
+      currentState = IDLE;
+      delay(1000);
+
       break;
   }
 }
-
 
 /**
  * @brief compares the stored key value with the read value of the scanned key. Returns true or false
@@ -273,30 +160,98 @@ bool isMatchingKey(byte* uid, int length) {
 void initLcd() {
   lcd.init();
   lcd.backlight();
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Scan card...");
 }
 
-void lcdAccesWait() {
+void writeToLCD(int row, int colm, char string[]) {
   lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Scan card...");
+  lcd.setCursor(colm, row);
+  lcd.print(string);
 }
 
-void lcdAccesGain() {
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Acces granted! ");
-  lcd.setCursor(0, 1);
-  lcd.print("User: ");
-  lcd.print("Oscar");
+void IdleState() {
+  writeToLCD(0, 0, "Scanning...");
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_YELLOW, LOW);
 }
 
-void lcdAccesDenied() {
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Acces Denied!");
+void ProcessState() {
+  writeToLCD(0, 0, "PROCESSING");
+  digitalWrite(LED_YELLOW, HIGH);
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_GREEN, LOW);
+}
+
+void DeniedState() {
+  writeToLCD(0, 0, "Acces Denied!");
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_RED, HIGH);
+  digitalWrite(LED_YELLOW, LOW);
+}
+
+void ApprovedState() {
+  writeToLCD(0, 0, "Welcome: someone");
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_YELLOW, LOW);
+}
+
+void ExitState() {
+  writeToLCD(0, 0, "Bye bye");
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, HIGH);
+  digitalWrite(LED_YELLOW, LOW);
+}
+
+
+void checkNearbyRFID() {
+  if (rfid.PICC_IsNewCardPresent()) {  // look to see if chip registers something nearby
+    currentState = PROCESSING;
+  }
+}
+
+void RFIDREADER() {
+  if (rfid.PICC_ReadCardSerial()) {  // read chip
+    MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
+    uidLength = rfid.uid.size;
+    for (byte i = 0; i < uidLength; i++) {
+      //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
+      uid[i] = rfid.uid.uidByte[i];
+    }
+
+    //printUID(uid, uidLength);
+
+    //communication between for status
+    if (isMatchingKey(uid, uidLength)) {
+      if (status == 1) {
+        currentState = EXIT;
+      } else {
+        currentState = APPROVED;
+      }
+    } else if (!isMatchingKey(uid, uidLength)) {
+      currentState = DENIED;
+    }
+
+    rfid.PICC_HaltA();       // halt PICC
+    rfid.PCD_StopCrypto1();  // stop encryption on PCD
+  }
+}
+
+void printUID(byte* uid, int length) {
+  Serial.print("Scanned UID: ");
+  for (byte i = 0; i < uidLength; i++) {
+    Serial.print(uid[i] < 0x10 ? " 0" : " ");
+    Serial.print(uid[i], HEX);
+  }
+  Serial.println();
+
+  Serial.print("Stored key is: ");
+  for (byte i = 0; i < sizeof(storedKey); i++) {
+    Serial.print(storedKey[i] < 0x10 ? " 0" : " ");
+    Serial.print(storedKey[i], HEX);
+  }
+
+  Serial.println();
 }
 
 // void alarmLED() {
@@ -326,39 +281,3 @@ void lcdAccesDenied() {
 
 //   delay(10);
 // }
-
-
-/**
- * @brief write text to display on LCD as a fnc
- *
- * @param row   what row to write to
- * @param colm  what colm to write to
- * @param string  what text to display
- */
-
-void writeToLCD(int row, int colm, char string[]) {
-  lcd.clear();
-  lcd.setCursor(colm, row);
-  lcd.print(string);
-}
-
-void readDataFromTS() {
-  // ThingSpeak.begin(client);
-  // client.connect(server,80);
-  // ThingSpeak.read
-}
-
-
-// void sendDataToTS(){
-//   ThingSpeak.begin(client);
-//   client.connect(server,80);
-//   ThingSpeak.setField(TSField,uid);)
-//   ThingSpeak.writeFields(channelID, writeAPIKey);
-
-//   /*
-//   If access denied or approved we want to log that
-//   We want to be able to add new user, and delete old users
-//   */
-//   client.stop();
-//   delay(postDelay);
-// };
