@@ -24,12 +24,11 @@ void Backend::begin() {
    @param D  Data variable.
    @param field  Field-index of ThingSpeak field. 1-indexed.
 */
-void Backend::postTSFloatData(float Data1, float Data2, byte field1, byte field2) {
+void Backend::postTSFloatData(float Data1, float Data2, byte field1, byte field2) { 
   client.connect(_server, 80);
   ThingSpeak.setField(field1, Data1);
   ThingSpeak.setField(field2, Data2);
   ThingSpeak.writeFields(_channelID, _APIWriteKey);
-  client.stop();
 }
 
 /**
@@ -45,5 +44,15 @@ void Backend::getTSFloatData(float *D, byte field) {
 }
 
 
+/**
+   @brief Reads an int datatype from a specified field in ThingSpeak.
 
+   @param *D  Pointer to data variable.
+   @param field  Field-index of ThingSpeak field. 1-indexed.
+*/
+void Backend::getTSintData(int *D, byte field) {
+  client.connect(_server, 80);
+  *D = ThingSpeak.readIntField(_channelID, field, _APIReadKey);
+  client.stop();
+}
 

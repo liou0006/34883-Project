@@ -34,7 +34,7 @@ const byte servoPin = 37;  ///< Pin for motor position.
 int servoPos = 0; ///< Position of servo.
 
 byte sensorFlag = 0;
-
+int IsHome = 0;
 
 void setup() {
   ITimer2.init();
@@ -54,31 +54,35 @@ void setup() {
 }
 
 void loop() {
-  // logging sensor values every 2 seconds
+  // logging sensor values every 60 seconds
   if(sensorFlag == 6){
     int chk = DHT.read11(DHT11_PIN);
     int sensorValue = analogRead(A0);
     float tempValue = (5.0 / 1023.0) * sensorValue * 100;
     float humValue = DHT.humidity;
     lcd.clear();
-    lcdPrintData(lcd, tempValue, humValue);
-    Serial.println(humValue); 
-    Serial.println(String(tempValue));
 
     Serial1.print(tempValue);
     Serial1.write(32);
     Serial1.print(humValue);
 
-    // If the temperature is too high, "open window"
-    if(tempValue >= 35){
-      servoPos = 90;
-      servo.write(servoPos);
-    } else {
-      servoPos = 0;
-      servo.write(servoPos);
-    }
+    if (IsHome == 1) {
+      lcdPrintData(lcd, tempValue, humValue);
 
+      // If the temperature is too high, "open window"
+      if(tempValue >= 35){
+        servoPos = 90;
+        servo.write(servoPos);
+      } else {
+        servoPos = 0;
+        servo.write(servoPos);
+      }
+    }
     sensorFlag = 0;
+  }
+
+  if (Serial1.available() > 0) { 
+    IsHome = Serial1.parseInt();
   }
 }
 

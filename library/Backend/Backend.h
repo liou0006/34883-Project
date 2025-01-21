@@ -11,6 +11,7 @@ class Backend {
             char *APIReadKey, char *APIWriteKey, char *server);
     void begin();
     void getTSFloatData(float *D, byte field);
+    void getTSintData(int *D, byte field);
     void postTSFloatData(float Data1, float Data2, byte field1, byte field2);
     
   private:
