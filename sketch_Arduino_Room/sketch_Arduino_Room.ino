@@ -12,6 +12,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <LCDPrint.h>
+#include "MadsIsDumb.h"
 
 #define USE_TIMER_2 true
 #include <TimerInterrupt.h>
