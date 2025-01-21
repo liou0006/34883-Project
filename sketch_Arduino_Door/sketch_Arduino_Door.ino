@@ -47,7 +47,7 @@ int uidLength = 0;
 int soundValue = 0;
 int digValue = 0;
 State currentState;
-byte status = 0;
+byte isHome = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -66,7 +66,7 @@ void setup() {
 
   currentState = IDLE;
 
-  Serial.println("Tap RFID/NFC Tag on reader");
+  Serial.println("Connect RX and TX pins");
 }
 
 void loop() {
@@ -88,15 +88,13 @@ void loop() {
     case PROCESSING:
       ProcessState();
       RFIDREADER();
-
       delay(1000);
+
       break;
 
     case DENIED:
       DeniedState();
-      //Alarm();
-      //shutdown;
-
+      //shutdown();
       currentState = IDLE;
       delay(1000);
 
@@ -104,21 +102,8 @@ void loop() {
 
     case APPROVED:
       ApprovedState();
-      status = 1;
-      Serial.write(status);
-
-      /*
-      motor do something
-      send user UID to thingspeak
-      
-      check for if the temperature and humidity is good. need to receive data from tingspeak
-      if not
-      open windows / motor
-      show warning type of temperature
-      else
-      show temperature and humidity
-      */
-
+      isHome = 1;
+      Serial.write(isHome);
       currentState = IDLE;
       delay(2000);
 
@@ -126,8 +111,8 @@ void loop() {
 
     case EXIT:
       ExitState();
-      status = 0;
-      Serial.write(status);
+      isHome = 0;
+      Serial.write(isHome);
       currentState = IDLE;
       delay(1000);
 
@@ -144,13 +129,11 @@ void loop() {
 
 bool isMatchingKey(byte* uid, int length) {
   if (length != sizeof(storedKey)) {
-    Serial.println("Mismatch in length");
     return false;  // UID lengths do not match
   }
 
   for (byte i = 0; i < length; i++) {
     if (uid[i] != storedKey[i]) {
-      Serial.println("Mismatch in loop");
       return false;  // Mismatch found
     }
   }
@@ -190,7 +173,7 @@ void DeniedState() {
 }
 
 void ApprovedState() {
-  writeToLCD(0, 0, "Welcome: someone");
+  writeToLCD(0, 0, "Welcome home");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
@@ -203,7 +186,6 @@ void ExitState() {
   digitalWrite(LED_YELLOW, LOW);
 }
 
-
 void checkNearbyRFID() {
   if (rfid.PICC_IsNewCardPresent()) {  // look to see if chip registers something nearby
     currentState = PROCESSING;
@@ -215,7 +197,6 @@ void RFIDREADER() {
     MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
     uidLength = rfid.uid.size;
     for (byte i = 0; i < uidLength; i++) {
-      //Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
       uid[i] = rfid.uid.uidByte[i];
     }
 
@@ -223,7 +204,7 @@ void RFIDREADER() {
 
     //communication between for status
     if (isMatchingKey(uid, uidLength)) {
-      if (status == 1) {
+      if (isHome == 1) {
         currentState = EXIT;
       } else {
         currentState = APPROVED;
@@ -234,6 +215,8 @@ void RFIDREADER() {
 
     rfid.PICC_HaltA();       // halt PICC
     rfid.PCD_StopCrypto1();  // stop encryption on PCD
+  } else {
+    currentState = IDLE;
   }
 }
 
@@ -254,15 +237,6 @@ void printUID(byte* uid, int length) {
   Serial.println();
 }
 
-// void alarmLED() {
-//   for (int i = 0; i <= 5; i++) {
-//     digitalWrite(RED_LED, LOW);
-//     delay(200);
-//     digitalWrite(RED_LED, HIGH);
-//     delay(200);
-//   }
-// }
-
 // void soundListen() {
 //   //for (int i = 0; i<32;i++){
 //   //soundValue += analogRead(SOUND_SENSOR);
@@ -278,6 +252,5 @@ void printUID(byte* uid, int length) {
 //     digitalWrite(GREEN_LED, LOW);
 //     delay(200);
 //   }
-
 //   delay(10);
 // }

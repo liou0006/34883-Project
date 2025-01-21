@@ -1,14 +1,43 @@
 /**
-   @file sketch_ESP_Room.ino
-
-   @mainpage This is a mainpage
-   Is this shown on the mainpage?
-
-   @section description Test
-   Does this even work?
-
-   @author Who knows
-*/
+*@file sketch_ESP_Room.ino
+*
+*
+*@section description Description
+*Receives data from arduino and transmits it through WiFi to ThingSpeak
+*
+*
+*@section circuit Circuit
+*How to connect the DHT11:
+*-Signal (DHT) to D4 (arduino)
+*
+*How to connect TMP36GZ:
+*-Vout (TMP) to A0 (arduino)
+*
+*
+*How to connect arduino to ESP8266:
+*-D18 (arduino) to Rx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
+*-D19 (arduino) to Tx (ESP) (IMPORTANT!: when uploading the code to the ESP and arduino - remove this wire from the socket)
+*
+*How to connect servo:
+*-D37 (arduino Mega) to servo signal 
+*
+*How to connect lcd:
+*-D20 (arduino) to SDA (LCD)
+*-D21 (arduino) to SCL (LCD)
+*
+*
+*
+*@section libraries Libraries
+*-Backend.h (personal library that contains functions for WiFi and ThingSpeak)
+*
+*
+*@section author Authors
+*Created by Ask Krat, Christian Houmann, Mads Andersen & Lukas Tallbacka
+*
+*
+*@date 20/1/2025
+*
+**/
 
 #include <Backend.h>
 
