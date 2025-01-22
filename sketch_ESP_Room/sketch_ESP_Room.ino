@@ -71,12 +71,9 @@ void loop() {
     } else {
       //Serial.println("Readings ignored. Probably faulty.");
     }
-
-    // Wait for another possible communication with ThingSpeak, then get IsHome status
-    delay(20000);
-    backend.getTSintData(&IsHome, fieldIsHome);
-    Serial.print(IsHome);
   }
-  
-
+  // Wait for another possible communication with ThingSpeak, then get IsHome status
+  delay(20000);
+  backend.getTSintData(&IsHome, fieldIsHome);
+  Serial.print(IsHome);
 }
