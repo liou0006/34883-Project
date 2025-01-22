@@ -129,7 +129,7 @@ void loop() {
       lcdPrintData(lcd, tempValue, humValue);
 
       // If the temperature is too high, "open window"
-      if(tempValue >= 35){
+      if(tempValue >= 30){
         servoPos = 90;
         servo.write(servoPos);
       } else {
