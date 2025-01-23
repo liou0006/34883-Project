@@ -2,6 +2,17 @@
 #include "LCDPrint.h"
 #include <LiquidCrystal_I2C.h>
 
+void initLcd() {
+  lcd.init();
+  lcd.backlight();
+}
+
+void writeToLCD(int row, int colm, char string[]) {
+  lcd.clear();
+  lcd.setCursor(colm, row);
+  lcd.print(string);
+}
+
 /**
  * @brief Prints a super cool welcome message on the LCD, and switches back to T/H view.
  */

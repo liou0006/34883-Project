@@ -18,7 +18,7 @@
 #define Select_PIN 10
 #define RST_PIN 5
 #define LED_RED 2
-#define LED_YELLOW 7
+#define LED_YELLOW 8
 #define LED_GREEN 4
 #define SOUND_SENSOR A0
 #define SERVERDOOR 8
@@ -156,17 +156,6 @@ bool isMatchingKey(byte* uid, int length) {
   return true;  // All bytes match
 }
 
-void initLcd() {
-  lcd.init();
-  lcd.backlight();
-}
-
-void writeToLCD(int row, int colm, char string[]) {
-  lcd.clear();
-  lcd.setCursor(colm, row);
-  lcd.print(string);
-}
-
 void IdleState() {
   writeToLCD(0, 0, "Scanning...");
   digitalWrite(LED_GREEN, LOW);
@@ -222,6 +211,11 @@ void checkNearbyRFID() {
   }
 }
 
+/**
+ * @brief ijljkjk
+ * 
+ */
+
 void RFIDREADER() {
   if (rfid.PICC_ReadCardSerial()) {  // read chip
     MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
@@ -266,21 +260,3 @@ void printUID(byte* uid, int length) {
 
   Serial.println();
 }
-
-// void soundListen() {
-//   //for (int i = 0; i<32;i++){
-//   //soundValue += analogRead(SOUND_SENSOR);
-//   //}
-//   soundValue = analogRead(SOUND_SENSOR);
-//   //digValue = digitalRead(7);
-//   //soundValue >>= 5;
-//   Serial.println(soundValue, DEC);
-//   Serial.println(digValue);
-//   if (soundValue > 60) {
-//     digitalWrite(GREEN_LED, HIGH);
-//     delay(200);
-//     digitalWrite(GREEN_LED, LOW);
-//     delay(200);
-//   }
-//   delay(10);
-// }
