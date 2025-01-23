@@ -21,11 +21,13 @@
 #define LED_YELLOW 7
 #define LED_GREEN 4
 #define SOUND_SENSOR A0
+#define SERVERDOOR 8
 
 //! grouped variables for state machine
 enum State {
   IDLE,
   APPROVED,
+  SERVER,
   DENIED,
   PROCESSING,
   EXIT
@@ -38,8 +40,8 @@ MFRC522 rfid(Select_PIN, RST_PIN);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //! UID keys
-//byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F };  //Oscars Key
-byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
+byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F };  //Oscars Key
+//byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
 
 //! variables
 byte uid[4];
@@ -60,18 +62,18 @@ void setup() {
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_YELLOW, OUTPUT);
-  pinMode(7, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(SERVERDOOR, INPUT);
   //pinMode(SOUND_SENSOR, INPUT);
 
   currentState = IDLE;
 
-  Serial.println("Connect RX and TX pins");
+  //Serial.println("Connect RX and TX pins");
 }
 
 void loop() {
 
-    /**
+  /**
    * @brief the code is setup as a statemachine according to key value and what to display.
    *
    *
@@ -81,6 +83,12 @@ void loop() {
     case IDLE:
       IdleState();
       checkNearbyRFID();
+
+      if (digitalRead(SERVERDOOR) && isHome == 1){
+        currentState = SERVER; 
+      } 
+
+      //Serial.println(isHome);
       delay(1000);
 
       break;
@@ -106,6 +114,14 @@ void loop() {
       Serial.write(isHome);
       currentState = IDLE;
       delay(2000);
+
+      break;
+
+    case SERVER:
+      ApprovedServerState();
+      delay(3000);
+      currentState = IDLE;
+
 
       break;
 
@@ -154,7 +170,7 @@ void writeToLCD(int row, int colm, char string[]) {
 void IdleState() {
   writeToLCD(0, 0, "Scanning...");
   digitalWrite(LED_GREEN, LOW);
-  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, LOW);
 }
 
@@ -170,6 +186,13 @@ void DeniedState() {
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, LOW);
+  delay(250);
+  digitalWrite(LED_RED, LOW);
+  delay(250);
+  digitalWrite(LED_RED, HIGH);
+  delay(250);
+  digitalWrite(LED_RED,LOW);
+  delay(250);
 }
 
 void ApprovedState() {
@@ -179,11 +202,18 @@ void ApprovedState() {
   digitalWrite(LED_YELLOW, LOW);
 }
 
+void ApprovedServerState() {
+  writeToLCD(0, 0, "Remote access");
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_YELLOW, LOW);
+}
+
 void ExitState() {
-  writeToLCD(0, 0, "Bye bye");
+  writeToLCD(0, 0, "Leaving house");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, HIGH);
-  digitalWrite(LED_YELLOW, LOW);
+  digitalWrite(LED_YELLOW, HIGH);
 }
 
 void checkNearbyRFID() {
