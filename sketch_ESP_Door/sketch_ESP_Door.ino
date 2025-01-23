@@ -3,7 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
 #include <ThingSpeak.h>
-#include <ESP8266mDNS.h>
+#include <Backend.h>
 
 //! Wi-Fi configuration
 WiFiClient client;
@@ -24,19 +24,21 @@ int responseCode = 0; //! variable for response code function
 
 void setup() {
   Serial.begin(9600);
+  while (!Serial) { ; }
 
-  pinMode(ledLocal, OUTPUT);
+  WiFi.begin(ssid, pass);
+  ThingSpeak.begin(client);
+
+  serverInit();
+  pinMode(ledLocal, OUTPUT);//not sure ift. rækkefølge
   digitalWrite(ledLocal, LOW);
 
-  while (!Serial) { ; }
-  WiFi.begin(ssid, pass);
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi");
-  ThingSpeak.begin(client);
-  serverInit();
   
 }
 
@@ -62,6 +64,15 @@ void loop() {
     responseCode = 0;
   }
   client.stop();
+}
+
+
+void WiFiInit() {
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
 }
 
 /*

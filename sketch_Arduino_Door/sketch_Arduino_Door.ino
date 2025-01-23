@@ -1,14 +1,43 @@
 /**
- * @author Liou Xia & Oscar Sjelle
- * @file Arduino_door.ino
- *
- * a public library for RFID has been downloaded
- * Created by ArduinoGetStarted.com
- *
- * The code has been modified for our purpose
- *
- * Tutorial page: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
- */
+*@file sketch_Arduino_Door.ino
+*
+*
+*@section description Description
+*The code is set up as a state machine that handles the RFID reader according to the incoming UID key value. Depending on the key value the state machine will display a corresponding message based of the key value. If a valid key value is scanned the system will send a isHome signal to the EP8266.
+*
+*
+*@section circuit Circuit
+*<b>DHT11 wiring</b>\n 
+*-Pin 1 (Signal) to D4.
+*
+*<b>LM35 wiring</b>\n 
+*-Pin 2 (Vout) to A0.
+*
+*
+*<b>Connection to ESP8266</b>\n 
+*-D18/TX1 (ATMEGA) to RX (ESP)\n 
+*-D19/RX1 (ATMEGA) to TX (ESP)
+*
+*<b>Servo wiring</b>\n 
+*-Pin 1 (Signal) to D37.
+*
+*<b>LCD wiring</b>\n 
+*-D20/SDA to SDA
+*-D21/SCL to SCL
+*
+*
+*@section libraries Libraries
+*-SPI.h (xx)\n
+*-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
+*-LCDPrint.h (Custom library for comon LCD functions)\n 
+*
+*
+*@section author Authors
+*Created by Liou Xia & Oscar Sjelle
+*
+*@date 23/1/2025
+*
+**/
 
 #include <SPI.h>
 #include <MFRC522.h>
