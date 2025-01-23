@@ -1,43 +1,41 @@
 /**
-*@file sketch_Arduino_Door.ino
-*
-*
-*@section description Description
-*The code is set up as a state machine that handles the RFID reader according to the incoming UID key value. Depending on the key value the state machine will display a corresponding message based of the key value. If a valid key value is scanned the system will send a isHome signal to the EP8266.
-*
-*
-*@section circuit Circuit
-*<b>DHT11 wiring</b>\n 
-*-Pin 1 (Signal) to D4.
-*
-*<b>LM35 wiring</b>\n 
-*-Pin 2 (Vout) to A0.
-*
-*
-*<b>Connection to ESP8266</b>\n 
-*-D18/TX1 (ATMEGA) to RX (ESP)\n 
-*-D19/RX1 (ATMEGA) to TX (ESP)
-*
-*<b>Servo wiring</b>\n 
-*-Pin 1 (Signal) to D37.
-*
-*<b>LCD wiring</b>\n 
-*-D20/SDA to SDA
-*-D21/SCL to SCL
-*
-*
-*@section libraries Libraries
-*-SPI.h (xx)\n
-*-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
-*-LCDPrint.h (Custom library for comon LCD functions)\n 
-*
-*
-*@section author Authors
-*Created by Liou Xia & Oscar Sjelle
-*
-*@date 23/1/2025
-*
-**/
+ *@file sketch_Arduino_Door.ino
+ *
+ *
+ *@section description Description
+ *The code is set up as a state machine that handles the RFID reader according to the incoming UID key value. Depending on the key value the state machine will display a corresponding message based of the key value. If a valid key value is scanned the system will send a isHome signal to the EP8266.
+ *
+ *
+ *@section circuit Circuit
+ *<b>DHT11 wiring</b>\n
+ *-Pin 1 (Signal) to D4.
+ *
+ *
+ *
+ *<b>Connection to ESP8266</b>\n
+ *-D18/TX1 (ATMEGA) to RX (ESP)\n
+ *-D19/RX1 (ATMEGA) to TX (ESP)
+ *
+ *<b>RFID wiring</b>\n
+ *-Pin 1 (Signal) to D37.
+ *
+ *<b>LCD wiring</b>\n
+ *-D20/SDA to SDA
+ *-D21/SCL to SCL
+ *
+ *
+ *@section libraries Libraries
+ *-SPI.h (xx)\n
+ *-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
+ *-LCDPrint.h (Custom library for comon LCD functions)\n
+ *
+ *
+ *@section author Authors
+ *Created by Liou Xia & Oscar Sjelle
+ *
+ *@date 23/1/2025
+ *
+ **/
 
 #include <SPI.h>
 #include <MFRC522.h>
@@ -54,7 +52,8 @@
 #define SERVERDOOR 8
 
 //! grouped variables for state machine
-enum State {
+enum State
+{
   IDLE,
   APPROVED,
   SERVER,
@@ -63,28 +62,32 @@ enum State {
   EXIT
 };
 
-//! create struct for rfid library
+/// create struct for rfid library
 MFRC522 rfid(Select_PIN, RST_PIN);
 
-//! Creates an LCD object. Parameters: (rs, enable, d4, d5, d6, d7)
+/// Creates an LCD object. Parameters: (rs, enable, d4, d5, d6, d7)
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-//! UID keys
-byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F };  //Oscars Key
-//byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
+/// UID keys
+byte storedKey[4] = {0xC3, 0x44, 0x22, 0x4F}; // Oscars Key
+// byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
 
-//! variables
-byte uid[4];
-int uidLength = 0; //! length of written user key, used in isMatchingKey function
-State currentState;
-byte isHome = 0; //! boolean value sent to thingSpeak when user enters or leaves the house
+/// variables
+byte uid[4]; ///< variable used to store the scanned key
+int uidLength = 0; ///< length of written user key, used in isMatchingKey function
+State currentState; ///< variable used to control the state machine
+byte isHome = 0; ///< boolean value sent to thingSpeak when user enters or leaves the house
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  while (!Serial) { ; }
+  while (!Serial)
+  {
+    ;
+  }
 
   SPI.begin();
-  rfid.PCD_Init();  //! init MFRC522 (model of rfid)
+  rfid.PCD_Init(); //! init MFRC522 (model of rfid)
   initLcd();
 
   pinMode(LED_GREEN, OUTPUT);
@@ -94,66 +97,68 @@ void setup() {
   pinMode(SERVERDOOR, INPUT);
 
   currentState = IDLE;
-
 }
 
-  /**
-   * the code is setup as a statemachine according to key value and what to display.
-   *
-   */
-  
-void loop() {
-  switch (currentState) {
-    case IDLE:
-      IdleState();
-      checkNearbyRFID();
+/**
+ * the code is setup as a statemachine according to key value and what to display.
+ *
+ */
 
-      if (digitalRead(SERVERDOOR) && isHome == 1){
-        currentState = SERVER; 
-      } 
+void loop()
+{
+  switch (currentState)
+  {
+  case IDLE:
+    IdleState();
+    checkNearbyRFID();
 
-      delay(1000);
+    if (digitalRead(SERVERDOOR) && isHome == 1)
+    {
+      currentState = SERVER;
+    }
 
-      break;
+    delay(1000);
 
-    case PROCESSING:
-      ProcessState();
-      RFIDREADER();
-      delay(1000);
+    break;
 
-      break;
+  case PROCESSING:
+    ProcessState();
+    RFIDREADER();
+    delay(1000);
 
-    case DENIED:
-      DeniedState();
-      currentState = IDLE;
-      delay(1000);
+    break;
 
-      break;
+  case DENIED:
+    DeniedState();
+    currentState = IDLE;
+    delay(1000);
 
-    case APPROVED:
-      ApprovedState();
-      isHome = 1;
-      Serial.write(isHome);
-      currentState = IDLE;
-      delay(2000);
+    break;
 
-      break;
+  case APPROVED:
+    ApprovedState();
+    isHome = 1;
+    Serial.write(isHome);
+    currentState = IDLE;
+    delay(2000);
 
-    case SERVER:
-      ApprovedServerState();
-      delay(3000);
-      currentState = IDLE;
+    break;
 
-      break;
+  case SERVER:
+    ApprovedServerState();
+    delay(3000);
+    currentState = IDLE;
 
-    case EXIT:
-      ExitState();
-      isHome = 0;
-      Serial.write(isHome);
-      currentState = IDLE;
-      delay(1000);
+    break;
 
-      break;
+  case EXIT:
+    ExitState();
+    isHome = 0;
+    Serial.write(isHome);
+    currentState = IDLE;
+    delay(1000);
+
+    break;
   }
 }
 
@@ -164,34 +169,41 @@ void loop() {
  * @param length  length of scanned key value.
  */
 
-bool isMatchingKey(byte* uid, int length) {
-  if (length != sizeof(storedKey)) {
-    return false;  // UID lengths do not match
+bool isMatchingKey(byte *uid, int length)
+{
+  if (length != sizeof(storedKey))
+  {
+    return false; ///< return false if UID lengths do not match
   }
 
-  for (byte i = 0; i < length; i++) {
-    if (uid[i] != storedKey[i]) {
-      return false;  // Mismatch found
+  for (byte i = 0; i < length; i++)
+  {
+    if (uid[i] != storedKey[i])
+    {
+      return false; ///< return false if UID values do not match
     }
   }
-  return true;  // All bytes match
+  return true; ///< return true if length and UID values matches
 }
 
-void IdleState() {
+void IdleState()
+{
   writeToLCD(0, 0, "Scanning...");
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, LOW);
 }
 
-void ProcessState() {
+void ProcessState()
+{
   writeToLCD(0, 0, "PROCESSING");
   digitalWrite(LED_YELLOW, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_GREEN, LOW);
 }
 
-void DeniedState() {
+void DeniedState()
+{
   writeToLCD(0, 0, "Acces Denied!");
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, HIGH);
@@ -201,25 +213,28 @@ void DeniedState() {
   delay(250);
   digitalWrite(LED_RED, HIGH);
   delay(250);
-  digitalWrite(LED_RED,LOW);
+  digitalWrite(LED_RED, LOW);
   delay(250);
 }
 
-void ApprovedState() {
+void ApprovedState()
+{
   writeToLCD(0, 0, "Welcome home");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
 }
 
-void ApprovedServerState() {
+void ApprovedServerState()
+{
   writeToLCD(0, 0, "Remote access");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
 }
 
-void ExitState() {
+void ExitState()
+{
   writeToLCD(0, 0, "Leaving house");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, HIGH);
@@ -228,63 +243,78 @@ void ExitState() {
 
 /**
  * @brief checks if there is a RFID chip nearby.
- * 
+ *
  */
-void checkNearbyRFID() {
-  if (rfid.PICC_IsNewCardPresent()) {  
+void checkNearbyRFID()
+{
+  if (rfid.PICC_IsNewCardPresent())
+  {
     currentState = PROCESSING;
   }
 }
 
 /**
  * @brief reads the RFID chip and compares it with the stored key value.
- * 
+ *
  */
-void RFIDREADER() {
-  if (rfid.PICC_ReadCardSerial()) {  // read chip
+void RFIDREADER()
+{
+  if (rfid.PICC_ReadCardSerial())
+  { // read chip
     MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
     uidLength = rfid.uid.size;
-    for (byte i = 0; i < uidLength; i++) {
+    for (byte i = 0; i < uidLength; i++)
+    {
       uid[i] = rfid.uid.uidByte[i];
     }
 
-    //printUID(uid, uidLength);
+    // printUID(uid, uidLength);
 
-    //communication between for status
-    if (isMatchingKey(uid, uidLength)) {
-      if (isHome == 1) {
+    // communication between for status
+    if (isMatchingKey(uid, uidLength))
+    {
+      if (isHome == 1)
+      {
         currentState = EXIT;
-      } else {
+      }
+      else
+      {
         currentState = APPROVED;
       }
-    } else if (!isMatchingKey(uid, uidLength)) {
+    }
+    else if (!isMatchingKey(uid, uidLength))
+    {
       currentState = DENIED;
     }
 
-    rfid.PICC_HaltA();       // halt PICC
-    rfid.PCD_StopCrypto1();  // stop encryption on PCD
-  } else {
+    rfid.PICC_HaltA();      // halt PICC
+    rfid.PCD_StopCrypto1(); // stop encryption on PCD
+  }
+  else
+  {
     currentState = IDLE;
   }
 }
 
 /**
  * @brief prints the scanned UID and the stored key value.
- * 
+ *
  */
-void printUID(byte* uid, int length) {
+void printUID(byte *uid, int length)
+{
   Serial.print("Scanned UID: ");
-  for (byte i = 0; i < uidLength; i++) {
+  for (byte i = 0; i < uidLength; i++)
+  {
     Serial.print(uid[i] < 0x10 ? " 0" : " ");
     Serial.print(uid[i], HEX);
   }
   Serial.println();
 
   Serial.print("Stored key is: ");
-  for (byte i = 0; i < sizeof(storedKey); i++) {
+  for (byte i = 0; i < sizeof(storedKey); i++)
+  {
     Serial.print(storedKey[i] < 0x10 ? " 0" : " ");
     Serial.print(storedKey[i], HEX);
   }
-
   Serial.println();
 }
