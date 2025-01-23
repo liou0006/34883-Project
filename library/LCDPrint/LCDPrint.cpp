@@ -2,11 +2,17 @@
 #include "LCDPrint.h"
 #include <LiquidCrystal_I2C.h>
 
+/**
+ * @brief initializes the lcd.
+ */
 void initLcd() {
   lcd.init();
   lcd.backlight();
 }
 
+/**
+ * @brief clears and writes a string to the LCD at a specified row and column.
+ */
 void writeToLCD(int row, int colm, char string[]) {
   lcd.clear();
   lcd.setCursor(colm, row);
