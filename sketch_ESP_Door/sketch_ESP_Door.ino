@@ -5,26 +5,22 @@
 #include <ThingSpeak.h>
 #include <ESP8266mDNS.h>
 
-// Wi-Fi configuration
+//! Wi-Fi configuration
 WiFiClient client;
 ESP8266WebServer server(80);
-// const char* ssid = "Ask Krat";
-// const char* pass = "feature-hollow-truly";
-//const char* ssid = "X_Liou";
-//const char* pass = "Teemo4life";
 
-const char* ssid = "Oscar Iphone";
-const char* pass = "gggggggg";
-const int ledLocal = D3;  // Remote LED
-
+//! Enter own SSID and password
+const char* ssid = "Username";
+const char* pass = "Password";
+const int ledLocal = D3;  //! Remote LED (bruges den)?
 
 //! ThingSpeak configuration
 unsigned long channelID = 2808283;
 const char* APIWriteKey = "G4QFBJM48LQQLI4T";
 const char* APIReadKey = "PUSZ92SJXXMO8BDG";
-const int postDelay = 15 * 1000;  // 15 seconds delay
+const int postDelay = 15 * 1000;  //! 15 seconds delay communication between ThingSpeak and ESP8266 
 
-int responseCode = 0;
+int responseCode = 0; //! variable for response code function
 
 void setup() {
   Serial.begin(9600);
@@ -41,9 +37,7 @@ void setup() {
   Serial.println("Connected to WiFi");
   ThingSpeak.begin(client);
   serverInit();
-
-
-
+  
 }
 
 void loop() {
@@ -70,8 +64,10 @@ void loop() {
   client.stop();
 }
 
-
-
+/*
+*
+* @brief Initializes the server
+*/
 void serverInit() {
 
   Serial.println("\nWiFi connected");
@@ -95,28 +91,10 @@ void serverInit() {
   Serial.println("Server started");
 }
 
-void serverLoop() {
-  server.handleClient();
-  // Periodically sync local LED state to ThingSpeak, remote LED from ThingSpeak, and handle RSSI data
-  static unsigned long lastSyncTime = 0;
-  if (millis() - lastSyncTime > 200) {
-    lastSyncTime = millis();
-
-    //handleRSSIData();
-
-    //syncLocalLEDToThingSpeak();
-    //syncRSSIToThingSpeak();
-
-    //if (ThingSpeak.writeFields(channelID, APIWriteKey)) {
-    //  Serial.println("Data successfully sent to ThingSpeak.");
-    //} else {
-    //  Serial.println("Failed to send data to ThingSpeak.");
-    //}
-
-    //syncRemoteLEDFromThingSpeak();
-  }
-}
-
+/*
+*
+* @brief creates the webpage
+*/
 void handleRoot() {
     server.send(200, "text/html", R"rawliteral(
 <html>
@@ -189,13 +167,12 @@ void handleRoot() {
     )rawliteral");
 }
 
+/*
+*
+* @brief sents a high to the Arduino when handles the LED
+*/
 void handleLED() {
-    // Toggle the local LED state
     digitalWrite(ledLocal, HIGH);
-
-    // Update Field 2 on ThingSpeak with the local LED state
-    //syncLocalLEDToThingSpeak();
-  
 
     delay(3000);
 
@@ -204,11 +181,20 @@ void handleLED() {
     server.send(303);
 }
 
+/*
+*
+* @brief Handles the LED state to be displayed on the webpage
+*/
+
 void handleLEDState() {
     String ledState = digitalRead(ledLocal) ? "Open" : "Closed";
     server.send(200, "text/plain", ledState);
 }
 
+/*
+*
+* @brief Error handling for 404: Not found
+*/
 void handleNotFound() {
     server.send(404, "text/plain", "404: Not found");
 }

@@ -13,6 +13,7 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <LiquidCrystal_I2C.h>
+#include <LCDPrint.h>
 
 //! defines
 #define Select_PIN 10
@@ -45,11 +46,9 @@ byte storedKey[4] = { 0xC3, 0x44, 0x22, 0x4F };  //Oscars Key
 
 //! variables
 byte uid[4];
-int uidLength = 0;
-int soundValue = 0;
-int digValue = 0;
+int uidLength = 0; //! length of written user key, used in isMatchingKey function
 State currentState;
-byte isHome = 0;
+byte isHome = 0; //! boolean value sent to thingSpeak when user enters or leaves the house
 
 void setup() {
   Serial.begin(9600);
@@ -64,21 +63,17 @@ void setup() {
   pinMode(LED_YELLOW, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(SERVERDOOR, INPUT);
-  //pinMode(SOUND_SENSOR, INPUT);
 
   currentState = IDLE;
 
-  //Serial.println("Connect RX and TX pins");
 }
 
-void loop() {
-
   /**
-   * @brief the code is setup as a statemachine according to key value and what to display.
-   *
+   * the code is setup as a statemachine according to key value and what to display.
    *
    */
-
+  
+void loop() {
   switch (currentState) {
     case IDLE:
       IdleState();
@@ -88,7 +83,6 @@ void loop() {
         currentState = SERVER; 
       } 
 
-      //Serial.println(isHome);
       delay(1000);
 
       break;
@@ -102,7 +96,6 @@ void loop() {
 
     case DENIED:
       DeniedState();
-      //shutdown();
       currentState = IDLE;
       delay(1000);
 
@@ -121,7 +114,6 @@ void loop() {
       ApprovedServerState();
       delay(3000);
       currentState = IDLE;
-
 
       break;
 
@@ -205,17 +197,20 @@ void ExitState() {
   digitalWrite(LED_YELLOW, HIGH);
 }
 
+/**
+ * @brief checks if there is a RFID chip nearby.
+ * 
+ */
 void checkNearbyRFID() {
-  if (rfid.PICC_IsNewCardPresent()) {  // look to see if chip registers something nearby
+  if (rfid.PICC_IsNewCardPresent()) {  
     currentState = PROCESSING;
   }
 }
 
 /**
- * @brief ijljkjk
+ * @brief reads the RFID chip and compares it with the stored key value.
  * 
  */
-
 void RFIDREADER() {
   if (rfid.PICC_ReadCardSerial()) {  // read chip
     MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
@@ -244,6 +239,10 @@ void RFIDREADER() {
   }
 }
 
+/**
+ * @brief prints the scanned UID and the stored key value.
+ * 
+ */
 void printUID(byte* uid, int length) {
   Serial.print("Scanned UID: ");
   for (byte i = 0; i < uidLength; i++) {
