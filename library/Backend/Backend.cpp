@@ -1,6 +1,6 @@
 #include <Backend.h>
-#include <ESP8266WiFi.h>
 #include <ThingSpeak.h>
+#include <ESP8266WiFi.h>
 
 WiFiClient client;
 
@@ -19,16 +19,42 @@ void Backend::begin() {
 }
 
 /**
-   @brief Writes a float to a specified field in ThingSpeak.
+   @brief Writes two floats to specified fields in ThingSpeak.
 
-   @param D  Data variable.
-   @param field  Field-index of ThingSpeak field. 1-indexed.
+   @param Data1  First data variable.
+   @param Data1  Second data variable.
+   @param field  First field-index of ThingSpeak field. 1-indexed.
+   @param field  Second field-index of ThingSpeak field. 1-indexed.
+
+   @return  ThingSpeak response-code
 */
-void Backend::postTSFloatData(float Data1, float Data2, byte field1, byte field2) { 
+int Backend::postTSFloatData(float Data1, float Data2, byte field1, byte field2) {
+  int responseCode; 
   client.connect(_server, 80);
   ThingSpeak.setField(field1, Data1);
   ThingSpeak.setField(field2, Data2);
-  ThingSpeak.writeFields(_channelID, _APIWriteKey);
+  responsCode = ThingSpeak.writeFields(_channelID, _APIWriteKey);
+  client.stop();
+
+  return responsCode;
+}
+
+/**
+   @brief Writes an byte to a specified field in ThingSpeak.
+
+   @param D   Data variable.
+   @param field   Field-index of ThingSpeak field. 1-indexed.
+
+   @return  ThingSpeak response-code
+*/
+int Backend::postTSByteData(byte D, byte field) { 
+  int responseCode;
+  client.connect(_server, 80);
+  ThingSpeak.setField(field, D);
+  responsCode = ThingSpeak.writeFields(_channelID, _APIWriteKey);
+  client.stop();
+
+  return responsCode;
 }
 
 /**
@@ -43,16 +69,14 @@ void Backend::getTSFloatData(float *D, byte field) {
   client.stop();
 }
 
-
 /**
-   @brief Reads an int datatype from a specified field in ThingSpeak.
+   @brief Reads byte from a specified field in ThingSpeak.
 
    @param *D  Pointer to data variable.
    @param field  Field-index of ThingSpeak field. 1-indexed.
 */
-void Backend::getTSintData(int *D, byte field) {
+void Backend::getTSByteData(int *D, byte field) {
   client.connect(_server, 80);
   *D = ThingSpeak.readIntField(_channelID, field, _APIReadKey);
   client.stop();
 }
-

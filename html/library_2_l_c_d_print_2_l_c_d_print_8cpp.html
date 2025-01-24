@@ -113,6 +113,12 @@ $(function(){initNavTree('library_2_l_c_d_print_2_l_c_d_print_8cpp.html',''); in
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad6f84952daad8f46512a59ee823ac0a4" id="r_ad6f84952daad8f46512a59ee823ac0a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6f84952daad8f46512a59ee823ac0a4">initLcd</a> ()</td></tr>
+<tr class="memdesc:ad6f84952daad8f46512a59ee823ac0a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">initializes the lcd.  <br /></td></tr>
+<tr class="separator:ad6f84952daad8f46512a59ee823ac0a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f470e1d05242c6255f2a0b211b185c0" id="r_a8f470e1d05242c6255f2a0b211b185c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f470e1d05242c6255f2a0b211b185c0">writeToLCD</a> (int row, int colm, char string[])</td></tr>
+<tr class="memdesc:a8f470e1d05242c6255f2a0b211b185c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">clears and writes a string to the LCD at a specified row and column.  <br /></td></tr>
+<tr class="separator:a8f470e1d05242c6255f2a0b211b185c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc2f332044f741ba250547176d54780" id="r_accc2f332044f741ba250547176d54780"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accc2f332044f741ba250547176d54780">lcdPrintWelcome</a> (LiquidCrystal_I2C <a class="el" href="sketch___arduino___door_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d">lcd</a>)</td></tr>
 <tr class="memdesc:accc2f332044f741ba250547176d54780"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a super cool welcome message on the LCD, and switches back to T/H view.  <br /></td></tr>
 <tr class="separator:accc2f332044f741ba250547176d54780"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,6 +127,25 @@ Functions</h2></td></tr>
 <tr class="separator:aa0638c221c10135791d6998ae23311cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad6f84952daad8f46512a59ee823ac0a4" name="ad6f84952daad8f46512a59ee823ac0a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6f84952daad8f46512a59ee823ac0a4">&#9670;&#160;</a></span>initLcd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initLcd </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>initializes the lcd. </p>
+
+</div>
+</div>
 <a id="aa0638c221c10135791d6998ae23311cf" name="aa0638c221c10135791d6998ae23311cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa0638c221c10135791d6998ae23311cf">&#9670;&#160;</a></span>lcdPrintData()</h2>
 
@@ -172,6 +197,34 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Prints a super cool welcome message on the LCD, and switches back to T/H view. </p>
+
+</div>
+</div>
+<a id="a8f470e1d05242c6255f2a0b211b185c0" name="a8f470e1d05242c6255f2a0b211b185c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f470e1d05242c6255f2a0b211b185c0">&#9670;&#160;</a></span>writeToLCD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeToLCD </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>row</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>colm</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>string</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>clears and writes a string to the LCD at a specified row and column. </p>
 
 </div>
 </div>

@@ -1,2 +1,4 @@
+initLcd		KEYWORD1
+writeToLCD	KEYWORD1
 lcdPrintWelcome	KEYWORD1
 lcdPrintData	KEYWORD1

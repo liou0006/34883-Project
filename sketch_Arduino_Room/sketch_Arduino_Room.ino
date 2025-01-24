@@ -5,8 +5,6 @@
 *@section description Description
 *Logs data from the sensors and displays them on an LCD. Data is also sent to an ESP8266 through UART for transmitting to ThingSpeak.
 *
-*
-*
 *@section circuit Circuit
 *<b>DHT11 wiring</b>\n 
 *-Pin 1 (Signal) to D4.
@@ -85,10 +83,7 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
 
-  lcd.init();
-  lcd.backlight();
-  lcd.clear();
-  lcd.setCursor(0, 0);
+  initLCD(lcd);
 
   servo.attach(servoPin);
   servo.write(servoPos);

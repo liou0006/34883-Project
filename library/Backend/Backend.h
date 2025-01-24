@@ -3,7 +3,6 @@
 
 #include <ThingSpeak.h>
 #include <ESP8266WiFi.h>
-//#include "Arduino.h"
 
 class Backend {
   public:
@@ -11,8 +10,10 @@ class Backend {
             char *APIReadKey, char *APIWriteKey, char *server);
     void begin();
     void getTSFloatData(float *D, byte field);
-    void getTSintData(int *D, byte field);
-    void postTSFloatData(float Data1, float Data2, byte field1, byte field2);
+    void getTSIntData(int *D, byte field);
+    int postTSFloatData(float Data1, float Data2, byte field1, byte field2);
+    int postTSByteData(byte D, byte field);
+    
     
   private:
     // WiFi and ThingSpeak variables

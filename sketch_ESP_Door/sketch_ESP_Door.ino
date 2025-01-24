@@ -1,38 +1,64 @@
+/**
+*@file sketch_ESP_Door.ino
+*
+*
+*@section description Description
+*Receives home status from UNO microcontroller, and transmits it through WiFi to ThingSpeak.
+*
+*
+*@section circuit Circuit
+*
+* Just need to connect the ESP8266's UART pins to the UNOs:\n 
+*-TX (UNO) to RX (ESP)\n 
+*-RX (UNO) to TX (ESP)
+*
+* And connect a status LED to D3 for website communication confirmation.
+*
+*@section libraries Libraries
+*-Backend.h (custom library for connecting to WiFi and ThingSpeak)\n 
+*-Various libraries for locally hosting a webserver (ESP8266mDNS.h, ESP8266WiFiMulti.h, ESP8266WebServer.h)
+*
+*
+*@section author Authors
+*Created by Liou Xia & Oscar Sjelle
+*
+*
+*@date 24/1/2025
+*
+**/
+
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266WiFi.h>
-#include <ThingSpeak.h>
 #include <Backend.h>
 
-//! Wi-Fi configuration
-WiFiClient client;
 ESP8266WebServer server(80);
 
-//! Enter own SSID and password
-const char* ssid = "Username";
-const char* pass = "Password";
-const int ledLocal = D3;  //! Remote LED (bruges den)?
+// Wi-Fi configuration
+char* ssid = "Username";  ///< SSID of the connected network.
+char* pass = "Password";  ///< Password of the connected network.
+const int ledLocal = D3;  ///< LED for remote access from website
 
-//! ThingSpeak configuration
-unsigned long channelID = 2808283;
-const char* APIWriteKey = "G4QFBJM48LQQLI4T";
-const char* APIReadKey = "PUSZ92SJXXMO8BDG";
-const int postDelay = 15 * 1000;  //! 15 seconds delay communication between ThingSpeak and ESP8266 
+// ThingSpeak configuration
+unsigned long channelID = 2808283;  ///< ChannelID of ThingSpeak channel.
+char *APIReadKey = "PUSZ92SJXXMO8BDG";  ///< Read API key of ThingSpeak channel.
+char *APIWriteKey = "G4QFBJM48LQQLI4T"; ///< Write API key of ThingSpeak channel.
+char *server = "api.thingspeak.com";  ///< ThingSpeak server.
+byte fieldHS = 3;                 ///< The ThingSpeak field-index of the home status field.
+const int postDelay = 15 * 1000;  ///< 15 seconds delay communication between ThingSpeak and ESP8266.
 
-int responseCode = 0; //! variable for response code function
+int responseCode = 0; ///< Variable for response from ThingSpeak.
+
+/// Creates backend object with WiFi and ThingSpeak parameters
+Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
 
 void setup() {
   Serial.begin(9600);
   while (!Serial) { ; }
 
-  WiFi.begin(ssid, pass);
-  ThingSpeak.begin(client);
-
   serverInit();
-  pinMode(ledLocal, OUTPUT);//not sure ift. rækkefølge
+  pinMode(ledLocal, OUTPUT);
   digitalWrite(ledLocal, LOW);
-
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -46,13 +72,13 @@ void loop() {
 
   serverLoop();
 
+  // If we receive communication on UART (home status), attempt to write to ThingSpeak until it is succesful.
   if (Serial.available() > 0) {
     byte oneBite = Serial.read();
     Serial.println(oneBite);
 
     while (responseCode != 200) {
-      ThingSpeak.setField(3, oneBite);
-      responseCode = ThingSpeak.writeFields(channelID, APIWriteKey);
+      responseCode = Backend.postTSByteData(oneBite, fieldHS);
 
       if (responseCode == 200) {
         Serial.println("Data sent success");
@@ -63,16 +89,6 @@ void loop() {
     }
     responseCode = 0;
   }
-  client.stop();
-}
-
-
-void WiFiInit() {
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-  Serial.println("Connected to WiFi");
 }
 
 /*
@@ -209,4 +225,3 @@ void handleLEDState() {
 void handleNotFound() {
     server.send(404, "text/plain", "404: Not found");
 }
-

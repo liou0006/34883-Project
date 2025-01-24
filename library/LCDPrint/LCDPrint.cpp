@@ -5,15 +5,17 @@
 /**
  * @brief initializes the lcd.
  */
-void initLcd() {
+void initLcd(LiquidCrystal_I2C lcd) {
   lcd.init();
   lcd.backlight();
+  lcd.clear();
+  lcd.setCursor(0, 0);
 }
 
 /**
  * @brief clears and writes a string to the LCD at a specified row and column.
  */
-void writeToLCD(int row, int colm, char string[]) {
+void writeToLCD(LiquidCrystal_I2C lcd, int row, int colm, char string[]) {
   lcd.clear();
   lcd.setCursor(colm, row);
   lcd.print(string);
@@ -23,6 +25,8 @@ void writeToLCD(int row, int colm, char string[]) {
  * @brief Prints a super cool welcome message on the LCD, and switches back to T/H view.
  */
 void lcdPrintWelcome(LiquidCrystal_I2C lcd){
+  lcd.clear();
+  lcd.setCursor(0, 0);
   lcd.print("Welcome home!");
   delay(500);
   for(int i = 0; i<16; i++){
@@ -34,11 +38,6 @@ void lcdPrintWelcome(LiquidCrystal_I2C lcd){
     lcd.scrollDisplayLeft();
   }
   delay(500);
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Temp:");
-  lcd.setCursor(0,1);
-  lcd.print("Humi:");
 }
 
 /**

@@ -7,27 +7,28 @@
  *
  *
  *@section circuit Circuit
- *<b>DHT11 wiring</b>\n
- *-Pin 1 (Signal) to D4.
+ *<b>LED wiring</b>\n 
+ *-Denied LED (Red) to D2.\n 
+ *-Processing LED (Yellow) to D8.\n 
+ *-Approved LED (Green) to D4.
  *
  *
+ *<b>Connection to ESP8266</b>\n 
+ *-TX (UNO) to RX (ESP)\n 
+ *-RX (UNO) to TX (ESP)
  *
- *<b>Connection to ESP8266</b>\n
- *-D18/TX1 (ATMEGA) to RX (ESP)\n
- *-D19/RX1 (ATMEGA) to TX (ESP)
- *
- *<b>RFID wiring</b>\n
+ *<b>RFID wiring</b>\n 
  *-Pin 1 (Signal) to D37.
  *
- *<b>LCD wiring</b>\n
- *-D20/SDA to SDA
+ *<b>LCD wiring</b>\n 
+ *-D20/SDA to SDA\n 
  *-D21/SCL to SCL
  *
  *
  *@section libraries Libraries
- *-SPI.h (xx)\n
- *-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
- *-LCDPrint.h (Custom library for comon LCD functions)\n
+ *-SPI.h (Default library for configuring SPI communication)\n 
+ *-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc)\n 
+ *-LCDPrint.h (Custom library for comon LCD functions)
  *
  *
  *@section author Authors
@@ -39,19 +40,19 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
-#include <LiquidCrystal_I2C.h>
 #include <LCDPrint.h>
 
-//! defines
+//Define pins
 #define Select_PIN 10
 #define RST_PIN 5
-#define LED_RED 2
+#define LED_RED 2       
 #define LED_YELLOW 8
 #define LED_GREEN 4
 #define SOUND_SENSOR A0
 #define SERVERDOOR 8
+//why is serverdoor and the yellow LED the same??
 
-//! grouped variables for state machine
+//! Grouped variables for state machine
 enum State
 {
   IDLE,
@@ -62,17 +63,17 @@ enum State
   EXIT
 };
 
-/// create struct for rfid library
+/// Create struct for RFID library
 MFRC522 rfid(Select_PIN, RST_PIN);
 
 /// Creates an LCD object. Parameters: (rs, enable, d4, d5, d6, d7)
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-/// UID keys
+// UID keys
 byte storedKey[4] = {0xC3, 0x44, 0x22, 0x4F}; // Oscars Key
 // byte storedKey[4] = { 0xE1, 0x0B, 0xCB, 0x0D };  // Lious Key
 
-/// variables
+// Program variables
 byte uid[4]; ///< variable used to store the scanned key
 int uidLength = 0; ///< length of written user key, used in isMatchingKey function
 State currentState; ///< variable used to control the state machine
@@ -87,8 +88,8 @@ void setup()
   }
 
   SPI.begin();
-  rfid.PCD_Init(); //! init MFRC522 (model of rfid)
-  initLcd();
+  rfid.PCD_Init(); // init MFRC522 (model of rfid)
+  initLcd(lcd);
 
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
@@ -188,7 +189,7 @@ bool isMatchingKey(byte *uid, int length)
 
 void IdleState()
 {
-  writeToLCD(0, 0, "Scanning...");
+  writeToLCD(lcd, 0, 0, "Scanning...");
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, LOW);
@@ -196,7 +197,7 @@ void IdleState()
 
 void ProcessState()
 {
-  writeToLCD(0, 0, "PROCESSING");
+  writeToLCD(lcd, 0, 0, "PROCESSING");
   digitalWrite(LED_YELLOW, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_GREEN, LOW);
@@ -204,7 +205,7 @@ void ProcessState()
 
 void DeniedState()
 {
-  writeToLCD(0, 0, "Acces Denied!");
+  writeToLCD(lcd, 0, 0, "Acces Denied!");
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, LOW);
@@ -219,15 +220,15 @@ void DeniedState()
 
 void ApprovedState()
 {
-  writeToLCD(0, 0, "Welcome home");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
+  lcdPrintWelcome(lcd);
 }
 
 void ApprovedServerState()
 {
-  writeToLCD(0, 0, "Remote access");
+  writeToLCD(lcd, 0, 0, "Remote access");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, LOW);
   digitalWrite(LED_YELLOW, LOW);
@@ -235,7 +236,7 @@ void ApprovedServerState()
 
 void ExitState()
 {
-  writeToLCD(0, 0, "Leaving house");
+  writeToLCD(lcd, 0, 0, "Leaving house");
   digitalWrite(LED_GREEN, HIGH);
   digitalWrite(LED_RED, HIGH);
   digitalWrite(LED_YELLOW, HIGH);

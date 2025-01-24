@@ -24,9 +24,9 @@
 */
 var NAVTREE =
 [
-  [ "Super cool project", "index.html", [
-    [ "arrrrgh", "index.html", null ],
-    [ "34883-Project", "md__r_e_a_d_m_e.html", null ],
+  [ "Smart home access and monitoring system", "index.html", [
+    [ "34338-Project at DTU: Smart-home", "index.html", null ],
+    [ "34338-Project", "md__r_e_a_d_m_e.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -39,7 +39,7 @@ var NAVTREE =
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
-        [ "All", "globals.html", "globals_dup" ],
+        [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
@@ -52,8 +52,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_dummy___e_s_p_8ino.html",
-"rfid_8cpp.html#a1d947f2b23c11298bc35257662b889d3"
+"_backend_8cpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
