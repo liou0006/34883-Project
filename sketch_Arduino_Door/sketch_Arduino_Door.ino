@@ -34,13 +34,13 @@
  *@section libraries Libraries
  *-SPI.h (Default library for configuring SPI communication)\n 
  *-MFRC522.h (Link to the used library: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc)\n 
- *-LCDPrint.h (Custom library for comon LCD functions)
+ *-LCDPrint.h (Custom library for common LCD functions)
  *
  *
  *@section author Authors
  *Created by Liou Xia & Oscar Sjelle
  *
- *@date 23/1/2025
+ *@date 24/1/2025
  *
  **/
 
@@ -261,7 +261,7 @@ void checkNearbyRFID()
 }
 
 /**
- * @brief reads the RFID chip and compares it with the stored key value.
+ * @brief reads the RFID chip and compares it with the stored key value to determine the next-state
  *
  */
 void RFIDREADER()
@@ -277,7 +277,6 @@ void RFIDREADER()
 
     // printUID(uid, uidLength);
 
-    // communication between for status
     if (isMatchingKey(uid, uidLength))
     {
       if (isHome == 1)
