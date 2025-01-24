@@ -22,7 +22,7 @@
 *
 *
 *@section author Authors
-*Created by Christian Houmann, Liou Xia & Oscar Sjelle
+*Created by Christian Houmann, Ask Krat, Liou Xia & Oscar Sjelle
 *
 *
 *@date 24/1/2025
