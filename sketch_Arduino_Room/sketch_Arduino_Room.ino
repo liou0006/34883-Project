@@ -85,10 +85,7 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
 
-  lcd.init();
-  lcd.backlight();
-  lcd.clear();
-  lcd.setCursor(0, 0);
+  initLCD(lcd);
 
   servo.attach(servoPin);
   servo.write(servoPos);
