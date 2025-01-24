@@ -12,7 +12,7 @@
 *-TX (UNO) to RX (ESP)\n 
 *-RX (UNO) to TX (ESP)
 *
-* And connect a status LED to D3 for website communication confirmation.
+* (something about the ledLocal?)
 *
 *@section libraries Libraries
 *-Backend.h (custom library for connecting to WiFi and ThingSpeak)\n 
@@ -35,15 +35,15 @@
 ESP8266WebServer server(80);
 
 // Wi-Fi configuration
-char* ssid = "Username";  ///< SSID of the connected network.
-char* pass = "Password";  ///< Password of the connected network.
-const int ledLocal = D3;  ///< LED for remote access from website
+char* ssid = "Username";
+char* pass = "Password";
+const int ledLocal = D3;
 
 // ThingSpeak configuration
-unsigned long channelID = 2808283;  ///< ChannelID of ThingSpeak channel.
-char *APIReadKey = "PUSZ92SJXXMO8BDG";  ///< Read API key of ThingSpeak channel.
-char *APIWriteKey = "G4QFBJM48LQQLI4T"; ///< Write API key of ThingSpeak channel.
-char *server = "api.thingspeak.com";  ///< ThingSpeak server.
+unsigned long channelID = 2808283;
+char *APIReadKey = "PUSZ92SJXXMO8BDG";
+char *APIWriteKey = "G4QFBJM48LQQLI4T";
+char *server = "api.thingspeak.com";
 byte fieldHS = 3;                 ///< The ThingSpeak field-index of the home status field.
 const int postDelay = 15 * 1000;  ///< 15 seconds delay communication between ThingSpeak and ESP8266.
 
