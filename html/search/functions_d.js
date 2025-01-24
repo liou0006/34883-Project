@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uartsenddata_0',['UARTSendData',['../_dummy___e_s_p_8ino.html#a0065e813bee838e5a6ece69bbb80b172',1,'Dummy_ESP.ino']]]
+  ['timerhandler_0',['TimerHandler',['../sketch___arduino___room_8ino.html#aa194957cf40e4d190cfb4359b382d73a',1,'sketch_Arduino_Room.ino']]]
 ];

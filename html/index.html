@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Super cool project: arrrrgh</title>
+<title>Smart home access and monitoring system: 34338-Project at DTU: Smart-home</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,7 +32,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Super cool project
+   <div id="projectname">Smart home access and monitoring system
    </div>
   </td>
     <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -102,13 +102,13 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">arrrrgh </div></div>
+  <div class="headertitle"><div class="title">34338-Project at DTU: Smart-home </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="description"></a>
-Description</h1>
-<p>Does this even work?</p>
-<dl class="section author"><dt>Author</dt><dd>Mads Andersen &amp; Lukas Tallbacka </dd></dl>
+<div class="textblock"><p>This report is made in accordance with the course “34338: Telecommunication Programming Projects with Arduino”. The goal of this project is to develop a smart home system, that in some way, shape or form can gather and log data, and react upon it.</p>
+<p>In this project, a smart-home access and monitoring system will be designed. The system is created in two parts, one at the door and one inside the home, which can communicate via. ThingSpeak and a webserver. At the door, a person scans their RFID chip, and if it matches a user in the system, the door opens and the door system sends a message to ThingSpeak that someone is now home. This causes an LCD at the door to show a welcome message.</p>
+<p>The home environment monitoring system measures temperature and humidity in the home, and always sends this data to ThingSpeak. If someone is home, it opens a window if the temperature is above a certain threshold and closes it again when it falls below. The home monitoring system also has an alarm system triggered by a motion sensor. If no one is home and movement is detected, then the alarm will go off. The alarm can be turned off with a button. The door system also hosts a webserver with a button to remotely open the door.</p>
+<p>The project can be found on GitHub: <a href="https://github.com/liou0006/34883-Project">https://github.com/liou0006/34883-Project</a> </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
