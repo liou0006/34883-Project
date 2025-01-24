@@ -10,9 +10,10 @@
 *
 * Just need to connect the ESP8266's UART pins to the UNOs:\n 
 *-TX (UNO) to RX (ESP)\n 
-*-RX (UNO) to TX (ESP)
+*-RX (UNO) to TX (ESP)\n
 *
-* (something about the ledLocal?)
+* To send a High signal to the UNO when user enters, we use the setup: \n
+*-D7 (UNO) to D3 (ESP)
 *
 *@section libraries Libraries
 *-Backend.h (custom library for connecting to WiFi and ThingSpeak)\n 

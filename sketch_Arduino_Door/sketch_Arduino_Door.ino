@@ -18,7 +18,13 @@
  *-RX (UNO) to TX (ESP)
  *
  *<b>RFID wiring</b>\n 
- *-Pin 1 (Signal) to D37.
+ *-Vcc to 3.3V\n
+ *-RST to D5\n
+ *-GND to GND\n 
+ *-MISO to D11\n
+ *-MOSI to D10\n
+ *-SCK to D9\n
+ *-SS to D12
  *
  *<b>LCD wiring</b>\n 
  *-D20/SDA to SDA\n 
@@ -49,8 +55,8 @@
 #define LED_YELLOW 8
 #define LED_GREEN 4
 #define SOUND_SENSOR A0
-#define SERVERDOOR 8
-//why is serverdoor and the yellow LED the same??
+#define SERVERDOOR 7
+
 
 //! Grouped variables for state machine
 enum State
