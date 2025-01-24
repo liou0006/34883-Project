@@ -128,7 +128,7 @@ Macros</h2></td></tr>
 <tr class="separator:aca338dbd19d7940923334629f6e5f3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d947f2b23c11298bc35257662b889d3" id="r_a1d947f2b23c11298bc35257662b889d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d947f2b23c11298bc35257662b889d3">SOUND_SENSOR</a>&#160;&#160;&#160;A0</td></tr>
 <tr class="separator:a1d947f2b23c11298bc35257662b889d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f1f795ca4863914f875244d58c70b4a" id="r_a5f1f795ca4863914f875244d58c70b4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f1f795ca4863914f875244d58c70b4a">SERVERDOOR</a>&#160;&#160;&#160;8</td></tr>
+<tr class="memitem:a5f1f795ca4863914f875244d58c70b4a" id="r_a5f1f795ca4863914f875244d58c70b4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f1f795ca4863914f875244d58c70b4a">SERVERDOOR</a>&#160;&#160;&#160;7</td></tr>
 <tr class="separator:a5f1f795ca4863914f875244d58c70b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -177,7 +177,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a1f33e2a64ca6bde40bc3fe59ff0f15d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if there is a RFID chip nearby.  <br /></td></tr>
 <tr class="separator:a1f33e2a64ca6bde40bc3fe59ff0f15d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a032aced27b09f00540ec906e95626ac7" id="r_a032aced27b09f00540ec906e95626ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a032aced27b09f00540ec906e95626ac7">RFIDREADER</a> ()</td></tr>
-<tr class="memdesc:a032aced27b09f00540ec906e95626ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads the RFID chip and compares it with the stored key value.  <br /></td></tr>
+<tr class="memdesc:a032aced27b09f00540ec906e95626ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads the RFID chip and compares it with the stored key value to determine the next-state  <br /></td></tr>
 <tr class="separator:a032aced27b09f00540ec906e95626ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21128d0136f3db6e6881c0ed4dfec1c4" id="r_a21128d0136f3db6e6881c0ed4dfec1c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21128d0136f3db6e6881c0ed4dfec1c4">printUID</a> (byte *<a class="el" href="#abc65321ec875f56d59a0c7e493a13ca4">uid</a>, int length)</td></tr>
 <tr class="memdesc:a21128d0136f3db6e6881c0ed4dfec1c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">prints the scanned UID and the stored key value.  <br /></td></tr>
@@ -228,11 +228,11 @@ Circuit</h1>
 Libraries</h1>
 <p>-SPI.h (Default library for configuring SPI communication)<br  />
  -MFRC522.h (Link to the used library: <a href="https://arduinogetstarted.com/tutorials/arduino-rfid-nfc">https://arduinogetstarted.com/tutorials/arduino-rfid-nfc</a>)<br  />
- -LCDPrint.h (Custom library for comon LCD functions)</p>
+ -LCDPrint.h (Custom library for common LCD functions)</p>
 <h1><a class="anchor" id="author"></a>
 Authors</h1>
 <p>Created by Liou Xia &amp; Oscar Sjelle</p>
-<dl class="section date"><dt>Date</dt><dd>23/1/2025 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>24/1/2025 </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aca338dbd19d7940923334629f6e5f3b7" name="aca338dbd19d7940923334629f6e5f3b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca338dbd19d7940923334629f6e5f3b7">&#9670;&#160;</a></span>LED_GREEN</h2>
@@ -311,7 +311,7 @@ Authors</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SERVERDOOR&#160;&#160;&#160;8</td>
+          <td class="memname">#define SERVERDOOR&#160;&#160;&#160;7</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -619,7 +619,7 @@ Authors</h1>
       </table>
 </div><div class="memdoc">
 
-<p>reads the RFID chip and compares it with the stored key value. </p>
+<p>reads the RFID chip and compares it with the stored key value to determine the next-state </p>
 
 </div>
 </div>
