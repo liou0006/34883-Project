@@ -1,3 +1,18 @@
+/**
+*@file Backend.cpp
+*
+*
+*@section description Description
+*A simple library to connect various WiFi and ThingSpeak calls into one space. Utilizes a class to store network and ThingSpeak variables, to use in public function calls
+*
+*@section author Authors
+*Created by Liu Xia, Mads Andersen & Lukas Tallbacka
+*
+*
+*@date 24/1/2025
+*
+**/
+
 #include <Backend.h>
 #include <ThingSpeak.h>
 #include <ESP8266WiFi.h>

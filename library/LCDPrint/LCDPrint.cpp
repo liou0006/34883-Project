@@ -1,3 +1,18 @@
+/**
+*@file LCDPrint.cpp
+*
+*
+*@section description Description
+*A library to contain simple hardcoded messages for the LCD screen, as to not clog up the main file as much, and to be used between the Arduino boards.
+*
+*@section author Authors
+*Created by Liu Xia, Oscar Sjelle & Mads Andersen
+*
+*
+*@date 24/1/2025
+*
+**/
+
 #include "Arduino.h"
 #include "LCDPrint.h"
 #include <LiquidCrystal_I2C.h>
@@ -22,7 +37,7 @@ void writeToLCD(LiquidCrystal_I2C lcd, int row, int colm, char string[]) {
 }
 
 /**
- * @brief Prints a super cool welcome message on the LCD, and switches back to T/H view.
+ * @brief Prints a super cool welcome message on the LCD.
  */
 void lcdPrintWelcome(LiquidCrystal_I2C lcd){
   lcd.clear();
