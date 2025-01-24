@@ -1,5 +1,6 @@
 Backend	KEYWORD1
 begin	KEYWORD2
 getTSFloatData	KEYWORD2
-getTSintData	KEYWORD2
+getTSIntData	KEYWORD2
 postTSFloatData	KEYWORD2
+postTSByteData	KEYWORD2
