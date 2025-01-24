@@ -11,6 +11,7 @@
 * Just need to connect the ESP8266's UART pins to the UNOs:\n 
 *-TX (UNO) to RX (ESP)\n 
 *-RX (UNO) to TX (ESP)\n
+*-GND (ESP) to GND (UNO)
 *
 * To send a High signal to the UNO when user enters, we use the setup: \n
 *-D7 (UNO) to D3 (ESP)
@@ -21,7 +22,7 @@
 *
 *
 *@section author Authors
-*Created by Liou Xia & Oscar Sjelle
+*Created by Christian Houmann, Liou Xia & Oscar Sjelle
 *
 *
 *@date 24/1/2025
@@ -35,12 +36,12 @@
 
 ESP8266WebServer server(80);
 
-// Wi-Fi configuration
+/// Wi-Fi configuration
 char* ssid = "Username";
 char* pass = "Password";
 const int ledLocal = D3;
 
-// ThingSpeak configuration
+/// ThingSpeak configuration
 unsigned long channelID = 2808283;
 char *APIReadKey = "PUSZ92SJXXMO8BDG";
 char *APIWriteKey = "G4QFBJM48LQQLI4T";
@@ -48,7 +49,7 @@ char *server = "api.thingspeak.com";
 byte fieldHS = 3;                 ///< The ThingSpeak field-index of the home status field.
 const int postDelay = 15 * 1000;  ///< 15 seconds delay communication between ThingSpeak and ESP8266.
 
-int responseCode = 0; ///< Variable for response from ThingSpeak.
+int responseCode = 0; ///< Variable for response code for debugging and signal purposes from ThingSpeak.
 
 /// Creates backend object with WiFi and ThingSpeak parameters
 Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
@@ -92,7 +93,7 @@ void loop() {
   }
 }
 
-/*
+/**
 *
 * @brief Initializes the server
 */
@@ -119,7 +120,7 @@ void serverInit() {
   Serial.println("Server started");
 }
 
-/*
+/**
 *
 * @brief creates the webpage
 */
@@ -195,7 +196,7 @@ void handleRoot() {
     )rawliteral");
 }
 
-/*
+/**
 *
 * @brief sents a high to the Arduino when handles the LED
 */
@@ -209,7 +210,7 @@ void handleLED() {
     server.send(303);
 }
 
-/*
+/**
 *
 * @brief Handles the LED state to be displayed on the webpage
 */
@@ -219,7 +220,7 @@ void handleLEDState() {
     server.send(200, "text/plain", ledState);
 }
 
-/*
+/**
 *
 * @brief Error handling for 404: Not found
 */
