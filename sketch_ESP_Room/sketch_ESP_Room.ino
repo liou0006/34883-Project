@@ -50,13 +50,11 @@ int IsHome = 0; ///< "Boolean" status indicator of someone being home.
 Backend backend(ssid, pass, channelID, APIReadKey, APIWriteKey, server);
 
 void setup() {
-  //WiFi.begin(ssid, pass);
   backend.begin();
   Serial.begin(9600);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
   }
-  //Serial1.begin(9600);
 }
 
 void loop() {
@@ -68,6 +66,7 @@ void loop() {
     // If the values are within the rated sensor values, post to ThingSpeak
     if (((H > 20) && (H < 90)) && ((T > -40) && (T < 125))) {
       backend.postTSFloatData(H, T, fieldH, fieldT);
+      delay(20000);
     } else {
       //Serial.println("Readings ignored. Probably faulty.");
     }
