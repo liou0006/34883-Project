@@ -80,7 +80,7 @@ void loop() {
     Serial.println(oneBite);
 
     while (responseCode != 200) {
-      responseCode = Backend.postTSByteData(oneBite, fieldHS);
+      responseCode = backend.postTSByteData(oneBite, fieldHS);
 
       if (responseCode == 200) {
         Serial.println("Data sent success");
